@@ -13,19 +13,36 @@ type Props = {
   photoPosition?: string;
   /** 写真の見た目（縦長のポートレートなど、既定の横長比を変えたいとき） */
   photoClassName?: string;
+  /**
+   * 右上のぼかし装飾を出すか。
+   * 背景を差し替えた写真（代表の写真など）と重なると矩形の境界が見えるため、
+   * そうしたページでは false にする。
+   */
+  decoration?: boolean;
 };
 
 /**
  * 下層ページの冒頭。薄い黄緑の面に見出しを置き、右に写真を添える。
  * 写真がない場合はタイポグラフィだけで構成する。
  */
-export default function PageHeader({ en, title, lead, crumbs, photo, photoPosition, photoClassName }: Props) {
+export default function PageHeader({
+  en,
+  title,
+  lead,
+  crumbs,
+  photo,
+  photoPosition,
+  photoClassName,
+  decoration = true,
+}: Props) {
   return (
     <header className="relative overflow-hidden bg-mint pt-24 lg:pt-28">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -right-24 -top-24 h-[22rem] w-[22rem] rounded-full bg-sprout/50 blur-3xl lg:h-[30rem] lg:w-[30rem]"
-      />
+      {decoration ? (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -right-24 -top-24 h-[22rem] w-[22rem] rounded-full bg-sprout/50 blur-3xl lg:h-[30rem] lg:w-[30rem]"
+        />
+      ) : null}
       <Breadcrumbs crumbs={crumbs} className="relative" />
       <div
         className={`relative mx-auto grid max-w-6xl gap-8 px-5 pb-14 pt-8 sm:px-8 sm:pb-20 sm:pt-10 lg:gap-14 ${

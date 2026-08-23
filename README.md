@@ -60,6 +60,7 @@ TODO-CONTENT.md          オーナー確認が必要な情報
 
 - 元写真を `public` 直下に置いて `npm run images` を実行すると、`scripts/prepare-images.ts` の `MAP` に従ってリネーム・最適化し、`public/images/` へ出力する（元は `assets/originals/` に退避）
 - 表示側は `src/data/photos.ts` を参照する。`alt`・`width`・`height` はここで一元管理する
+- 代表の写真は青いスタジオ背景で撮影されているため、`BG_REPLACE` で背景だけをブランドカラーに差し替えている（ネクタイの青は保持するよう、色ではなく連結領域の面積で背景を判定）
 - **現在の掲載写真は生成AIによるイメージ写真**。実在のスタッフ・利用者ではないため、フッターに注記を出し、alt では断定を避けている（`PHOTO_NOTE`）。実写に差し替える場合は `MAP` を書き換えて再実行する
 
 ## 事業情報の更新

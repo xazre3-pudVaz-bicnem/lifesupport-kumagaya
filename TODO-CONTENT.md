@@ -61,8 +61,9 @@
 
 実写に差し替える場合は、`scripts/prepare-images.ts` の `MAP` を書き換えて `npx tsx scripts/prepare-images.ts` を実行してください。ファイル名・サイズは `src/data/photos.ts` と揃えます。
 
-- [x] 代表者の実写（2026年8月23日提供。プロフィール資料から人物部分を切り出して `/message` と `/about` に掲載）
-- [ ] 代表者の写真の元データ（現在は資料からの切り出しで395x480px。高解像度の原本があれば差し替えたい）
+- [x] 代表者の実写（2026年8月23日に原本1023x1537pxを受領。`/message` と `/about` に掲載）
+      青いスタジオ背景はサイトの配色から浮くため、背景のみブランドカラー（--color-mint）へ差し替えている。
+      処理は `scripts/prepare-images.ts` の `BG_REPLACE` に実装済みで、原本は `assets/originals/` に保管。
 - [ ] 実際のお届けの様子・制服・使用する車両
 - [ ] 熊谷市内の風景（地域性の訴求）
 

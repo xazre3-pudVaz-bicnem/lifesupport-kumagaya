@@ -46,8 +46,9 @@ export default function MessagePage() {
           { name: "代表挨拶", path: "/message" },
         ]}
         photo={photos.representative}
-        photoPosition="50% 22%"
-        photoClassName="mx-auto aspect-[4/5] w-full max-w-[15rem] sm:max-w-[17rem] lg:mx-0 lg:ml-auto lg:max-w-[20rem]"
+        photoPosition="50% 20%"
+        photoClassName="mx-auto aspect-[3/4] w-full max-w-[15rem] bg-transparent [mask-image:linear-gradient(to_bottom,black_86%,transparent_100%)] sm:max-w-[17rem] lg:mx-0 lg:ml-auto lg:max-w-[19rem]"
+        decoration={false}
       />
 
       {/* 名前・肩書き */}
@@ -73,8 +74,8 @@ export default function MessagePage() {
             <Reveal>
               <PhotoFrame
                 photo={photos.representative}
-                className="mx-auto aspect-[395/480] w-full max-w-[19rem]"
-                sizes="(min-width: 1024px) 19rem, 60vw"
+                className="mx-auto aspect-[1023/1537] w-full max-w-[18rem] bg-transparent [mask-image:linear-gradient(to_bottom,black_92%,transparent_100%)]"
+                sizes="(min-width: 1024px) 18rem, 60vw"
               />
               <p className="mt-4 text-center text-[12.5px] leading-[1.9] text-stone lg:text-left">
                 {representative.title}

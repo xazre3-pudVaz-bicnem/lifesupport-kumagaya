@@ -74,7 +74,7 @@ export default function AboutPage() {
           <div className="mt-16 grid items-center gap-8 border-t hairline pt-12 sm:grid-cols-[auto_1fr] sm:gap-10">
             <PhotoFrame
               photo={photos.representative}
-              className="aspect-[395/480] w-40 shrink-0 sm:w-48"
+              className="aspect-[1023/1537] w-36 shrink-0 sm:w-44"
               sizes="12rem"
             />
             <div>

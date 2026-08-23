@@ -22,16 +22,20 @@ const P = "ChatGPT Image 2026年8月23日 ";
 
 /**
  * 切り出しが必要な写真。
- * 代表プロフィールはインフォグラフィック（文字入り）のため、
- * 人物部分だけを切り出して使う（文字は画像に頼らずHTMLで書く）。
+ * （代表プロフィールは高解像度の原本を受領したため、現在は使用していない。
+ *   資料からの切り出しが再び必要になった場合はここに定義する）
  */
-const CROPS: Record<string, { out: string; left: number; top: number; width: number; height: number }> = {
-  "S__26247175.jpg": {
+const CROPS: Record<string, { out: string; left: number; top: number; width: number; height: number }> = {};
+
+/**
+ * 背景を差し替える写真。
+ * 代表の写真は青いスタジオ背景で撮影されており、サイトの配色から浮くため、
+ * 背景だけをブランドカラー（--color-mint）へ置き換える。
+ */
+const BG_REPLACE: Record<string, { out: string; bg: [number, number, number] }> = {
+  "representative-saito-takumi-original.jpg": {
     out: "images/about/kumagaya-representative-saito-takumi.jpg",
-    left: 45,
-    top: 178,
-    width: 395,
-    height: 480,
+    bg: [238, 246, 225], // --color-mint #eef6e1
   },
 };
 
@@ -92,6 +96,112 @@ async function convert(srcPath: string, outRel: string) {
   return { outRel, width: info.width, height: info.height };
 }
 
+/**
+ * 青いスタジオ背景をブランドカラーへ差し替える。
+ *
+ * ネクタイの青ストライプは B-R が背景（約145）を上回る箇所すらあり、色だけでは分離できない。
+ * そこで「背景色の連結領域のうち、外周に接するもの／面積が一定以上のもの」だけを背景とする。
+ * この写真では 主背景 852,148px・脇の隙間 1,626px に対し、
+ * ネクタイの断片は最大 325px なので、面積 800px を境に安全に分けられる。
+ * 輪郭に残る青フチは、背景色を混ぜず「青みだけを中和」してディテールを保つ。
+ */
+async function replaceBackground(srcPath: string, cfg: (typeof BG_REPLACE)[string], minArea = 800) {
+  const out = path.join(PUBLIC, cfg.out);
+  fs.mkdirSync(path.dirname(out), { recursive: true });
+
+  const { data, info } = await sharp(srcPath).rotate().raw().toBuffer({ resolveWithObject: true });
+  const { width: W, height: H, channels: C } = info;
+  const N = W * H;
+  const bg = cfg.bg;
+
+  // 背景色の候補
+  const seed = new Uint8Array(N);
+  for (let p = 0; p < N; p++) {
+    const i = p * C;
+    if (data[i + 2] - data[i] > 100 && data[i + 1] > 110) seed[p] = 1;
+  }
+
+  // 連結領域ごとに、外周接触または十分な面積があるものだけを背景と認める
+  const label = new Int32Array(N).fill(-1);
+  const core = new Uint8Array(N);
+  let comp = 0;
+  for (let s = 0; s < N; s++) {
+    if (!seed[s] || label[s] !== -1) continue;
+    const cells: number[] = [];
+    const stack = [s];
+    label[s] = comp;
+    let touchesEdge = false;
+    while (stack.length) {
+      const p = stack.pop()!;
+      cells.push(p);
+      const x = p % W;
+      const y = (p - x) / W;
+      if (x === 0 || y === 0 || x === W - 1 || y === H - 1) touchesEdge = true;
+      const nb: number[] = [];
+      if (x > 0) nb.push(p - 1);
+      if (x < W - 1) nb.push(p + 1);
+      if (y > 0) nb.push(p - W);
+      if (y < H - 1) nb.push(p + W);
+      for (const q of nb) if (seed[q] && label[q] === -1) { label[q] = comp; stack.push(q); }
+    }
+    if (touchesEdge || cells.length >= minArea) for (const p of cells) core[p] = 1;
+    comp++;
+  }
+
+  // 背景の縁から数px を「青みの中和」対象にする
+  const BAND = 4;
+  const dist = new Uint8Array(N).fill(255);
+  let frontier: number[] = [];
+  for (let p = 0; p < N; p++) if (core[p]) { dist[p] = 0; frontier.push(p); }
+  for (let d = 1; d <= BAND && frontier.length; d++) {
+    const next: number[] = [];
+    for (const p of frontier) {
+      const x = p % W;
+      const y = (p - x) / W;
+      const nb: number[] = [];
+      if (x > 0) nb.push(p - 1);
+      if (x < W - 1) nb.push(p + 1);
+      if (y > 0) nb.push(p - W);
+      if (y < H - 1) nb.push(p + W);
+      for (const q of nb) if (dist[q] === 255) { dist[q] = d; next.push(q); }
+    }
+    frontier = next;
+  }
+
+  const buf = Buffer.alloc(N * 3);
+  for (let p = 0, j = 0; p < N; p++, j += 3) {
+    const i = p * C;
+    let r = data[i];
+    let g = data[i + 1];
+    let b = data[i + 2];
+    if (core[p]) {
+      r = bg[0];
+      g = bg[1];
+      b = bg[2];
+    } else if (dist[p] <= BAND) {
+      const strength = (BAND + 1 - dist[p]) / (BAND + 1);
+      if (b - (r + g) / 2 > 12) {
+        const neutral = (r + g) / 2 + 12;
+        b = Math.round(b - (b - neutral) * strength);
+        if (b - r > 60 && g > 100) {
+          r = Math.round(r + (bg[0] - r) * strength);
+          g = Math.round(g + (bg[1] - g) * strength);
+          b = Math.round(b + (bg[2] - b) * strength);
+        }
+      }
+    }
+    buf[j] = r;
+    buf[j + 1] = g;
+    buf[j + 2] = b;
+  }
+
+  const res = await sharp(buf, { raw: { width: W, height: H, channels: 3 } })
+    .jpeg({ quality: 88, mozjpeg: true, chromaSubsampling: "4:4:4" })
+    .toFile(out);
+  console.log(`◐ ${cfg.out}  ${res.width}x${res.height}  ${Math.round(res.size / 1024)}KB（背景を差し替え）`);
+  return { outRel: cfg.out, width: res.width, height: res.height };
+}
+
 /** 指定範囲を切り出して出力する（人物写真をトリミングしすぎないこと） */
 async function cropOne(srcPath: string, c: (typeof CROPS)[string]) {
   const out = path.join(PUBLIC, c.out);
@@ -109,6 +219,19 @@ async function main() {
   fs.mkdirSync(ORIGINALS, { recursive: true });
   const results: { outRel: string; width: number; height: number }[] = [];
   const missing: string[] = [];
+
+  // ---- 背景を差し替える写真 ----
+  for (const [src, cfg] of Object.entries(BG_REPLACE)) {
+    const inPublic = path.join(PUBLIC, src);
+    const inOriginals = path.join(ORIGINALS, src);
+    const srcPath = fs.existsSync(inPublic) ? inPublic : fs.existsSync(inOriginals) ? inOriginals : null;
+    if (!srcPath) {
+      missing.push(src);
+      continue;
+    }
+    results.push(await replaceBackground(srcPath, cfg));
+    if (srcPath === inPublic) fs.renameSync(inPublic, inOriginals);
+  }
 
   // ---- 切り出しが必要な写真 ----
   for (const [src, c] of Object.entries(CROPS)) {
