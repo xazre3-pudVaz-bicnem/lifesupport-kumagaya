@@ -42,7 +42,7 @@ export function organizationJsonLd() {
     founder: { "@type": "Person", name: site.representative },
     sameAs: [site.instagram],
     knowsAbout: ["買い物代行", "高齢者の買い物支援", "介護保険外サービス"],
-    ...(site.tel ? { telephone: site.tel } : {}),
+    ...(site.tel ? { telephone: site.telIntl } : {}),
   };
 }
 

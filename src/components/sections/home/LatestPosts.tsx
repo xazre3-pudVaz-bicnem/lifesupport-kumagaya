@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import Reveal from "@/components/ui/Reveal";
 import SectionHeading from "@/components/ui/SectionHeading";
@@ -25,16 +26,25 @@ export default function LatestPosts() {
         </Reveal>
         <ul className="mt-10 grid gap-x-10 md:grid-cols-3">
           {posts.map((p, i) => (
-            <Reveal key={p.slug} as="li" delay={i * 0.06} className="border-t-2 border-sprout">
-              <Link href={`/blog/${p.slug}`} className="group block py-6">
-                <div className="flex items-baseline gap-3 text-[11.5px] tracking-wider text-stone">
+            <Reveal key={p.slug} as="li" delay={i * 0.06}>
+              <Link href={`/blog/${p.slug}`} className="group block">
+                <div className="relative aspect-[16/10] overflow-hidden bg-mint">
+                  <Image
+                    src={p.image}
+                    alt=""
+                    fill
+                    sizes="(min-width: 768px) 22rem, 100vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                  />
+                </div>
+                <div className="mt-4 flex items-baseline gap-3 border-t-2 border-sprout pt-4 text-[11.5px] tracking-wider text-stone">
                   <time dateTime={p.date}>{formatDate(p.date)}</time>
                   <span className="text-moss">{p.category}</span>
                 </div>
                 <h3 className="mt-2 font-maru text-[1.02rem] font-bold leading-[1.7] underline-offset-4 group-hover:underline">
                   {p.title}
                 </h3>
-                <p className="mt-2 line-clamp-3 text-[0.88rem] leading-[1.9] text-ink-soft">{p.description}</p>
+                <p className="mt-2 line-clamp-3 pb-6 text-[0.88rem] leading-[1.9] text-ink-soft">{p.description}</p>
               </Link>
             </Reveal>
           ))}

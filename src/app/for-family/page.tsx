@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PageHeader from "@/components/ui/PageHeader";
+import { photos } from "@/data/photos";
+import PhotoFrame from "@/components/ui/Photo";
 import AnswerBox from "@/components/ui/AnswerBox";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Reveal from "@/components/ui/Reveal";
@@ -8,7 +10,6 @@ import Faq from "@/components/ui/Faq";
 import ContactCta from "@/components/ui/ContactCta";
 import JsonLd from "@/components/ui/JsonLd";
 import RelatedPosts from "@/components/blog/RelatedPosts";
-import { FamilyIllustration } from "@/components/ui/Illustrations";
 import { FAQ_FAMILY } from "@/data/faq";
 import { site } from "@/data/site";
 import { pageMetadata } from "@/lib/seo";
@@ -85,7 +86,8 @@ export default function ForFamilyPage() {
           { name: "ホーム", path: "/" },
           { name: "離れて暮らすご家族へ", path: "/for-family" },
         ]}
-        aside={<FamilyIllustration className="h-auto w-[26rem]" />}
+        photo={photos.familyLiving}
+        photoPosition="50% 40%"
       />
 
       <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
@@ -94,14 +96,20 @@ export default function ForFamilyPage() {
             question="離れて暮らす親のために、買い物代行を依頼できますか？"
             answer={
               <>
-                はい。ライフサポート熊谷は、ご本人に代わってご家族からご依頼いただけます。ご相談・ご依頼はInstagram（{site.instagramId}）のDMで行えるため、遠方にお住まいでもやりとりが可能です。対象は熊谷市・深谷市・行田市・東松山市にお住まいの方。介護認定は不要です。
+                はい。ライフサポート熊谷は、ご本人に代わってご家族からご依頼いただけます。ご相談・ご依頼はお電話（{site.tel}）やInstagram（{site.instagramId}）のDMで行えるため、遠方にお住まいでもやりとりが可能です。対象は熊谷市・深谷市・行田市・東松山市にお住まいの方。介護認定は不要です。
               </>
             }
           />
         </Reveal>
-        <div className="mt-10 lg:hidden">
-          <FamilyIllustration className="mx-auto h-auto w-full max-w-md" />
-        </div>
+        <Reveal delay={0.06}>
+          <PhotoFrame
+            photo={photos.familySofa}
+            className="mt-12 aspect-[16/9]"
+            position="50% 40%"
+            sizes="(min-width: 1024px) 72rem, 100vw"
+            decorative
+          />
+        </Reveal>
       </section>
 
       {/* 状況 */}

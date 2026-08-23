@@ -1,5 +1,7 @@
 import Reveal from "@/components/ui/Reveal";
 import SectionHeading from "@/components/ui/SectionHeading";
+import PhotoFrame from "@/components/ui/Photo";
+import { photos } from "@/data/photos";
 import { PROMISES, VALUES } from "@/data/content";
 
 /** 大切にしていること（3つの価値観）＋ 3つのお約束 */
@@ -29,7 +31,7 @@ export default function Values({ showPromises = true }: { showPromises?: boolean
         </div>
 
         {showPromises ? (
-          <div className="mt-20 grid gap-8 border-t hairline pt-14 lg:grid-cols-[1fr_2fr] lg:gap-16">
+          <div className="mt-20 grid gap-10 border-t hairline pt-14 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
             <Reveal>
               <h3 className="font-maru text-[1.25rem] font-bold leading-[1.6]">
                 安心してご利用いただくための
@@ -39,6 +41,13 @@ export default function Values({ showPromises = true }: { showPromises?: boolean
               <p className="mt-4 text-[0.92rem] leading-[2] text-ink-soft">
                 お預かりするのは、商品だけでなく信頼です。迷ったときは、必ず確認してから動きます。
               </p>
+              <PhotoFrame
+                photo={photos.doorstepSmile}
+                className="mt-8 aspect-[4/3]"
+                position="50% 45%"
+                sizes="(min-width: 1024px) 24rem, 100vw"
+                decorative
+              />
             </Reveal>
             <ol className="space-y-6">
               {PROMISES.map((p, i) => (

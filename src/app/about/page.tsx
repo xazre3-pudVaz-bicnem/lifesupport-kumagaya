@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PageHeader from "@/components/ui/PageHeader";
+import { photos } from "@/data/photos";
+import PhotoFrame from "@/components/ui/Photo";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Reveal from "@/components/ui/Reveal";
 import ContactCta from "@/components/ui/ContactCta";
 import JsonLd from "@/components/ui/JsonLd";
 import LaunchNotice from "@/components/ui/LaunchNotice";
 import Values from "@/components/sections/home/Values";
-import { BagMark } from "@/components/ui/Illustrations";
 import { site } from "@/data/site";
 import { pageMetadata } from "@/lib/seo";
 import { webPageJsonLd } from "@/lib/jsonld";
@@ -42,7 +43,8 @@ export default function AboutPage() {
           { name: "ホーム", path: "/" },
           { name: "私たちについて", path: "/about" },
         ]}
-        aside={<BagMark className="h-40 w-40" />}
+        photo={photos.shoppingBasket}
+        photoPosition="55% 45%"
       />
 
       {/* 想い */}
@@ -67,6 +69,16 @@ export default function AboutPage() {
         </div>
       </section>
 
+      <Reveal>
+        <PhotoFrame
+          photo={photos.deliveryPaperBag}
+          className="aspect-[16/9] sm:aspect-[21/9]"
+          position="55% 50%"
+          sizes="100vw"
+          decorative
+        />
+      </Reveal>
+
       <Values />
 
       {/* 代表・事業概要 */}
@@ -84,7 +96,8 @@ export default function AboutPage() {
                 ["事業内容", `${site.services.join("・")}（介護保険外サービス）`],
                 ["対応エリア", site.areas.join("・")],
                 ["背景", "福祉・介護の現場経験から生まれた地域の買い物代行サービス"],
-                ["ご相談方法", `Instagram ${site.instagramId} のDM`],
+                ...(site.tel ? [["電話", site.tel]] : []),
+                ["ご相談方法", `お電話、または Instagram ${site.instagramId} のDM`],
               ].map(([k, v]) => (
                 <div key={k} className="grid gap-1 border-b hairline py-4 sm:grid-cols-[9rem_1fr] sm:gap-6">
                   <dt className="text-[0.88rem] tracking-wider text-stone">{k}</dt>
@@ -93,7 +106,7 @@ export default function AboutPage() {
               ))}
             </dl>
             <p className="mt-5 text-[0.85rem] leading-[1.9] text-stone">
-              ※所在地・電話番号・受付時間などは、確定次第このページと各ページに掲載します。現在はInstagramのDMでご相談を受け付けています。
+              ※所在地・受付時間などは、確定次第このページと各ページに掲載します。ご相談はお電話またはInstagramのDMで受け付けています。
             </p>
             <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3">
               <a

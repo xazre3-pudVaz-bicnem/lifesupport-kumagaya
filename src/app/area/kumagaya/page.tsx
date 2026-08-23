@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PageHeader from "@/components/ui/PageHeader";
+import { photos } from "@/data/photos";
+import PhotoFrame from "@/components/ui/Photo";
 import AnswerBox from "@/components/ui/AnswerBox";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Reveal from "@/components/ui/Reveal";
@@ -69,6 +71,8 @@ export default function AreaKumagayaPage() {
           { name: "ホーム", path: "/" },
           { name: "熊谷市の買い物代行・生活支援", path: "/area/kumagaya" },
         ]}
+        photo={photos.deliveryPaperBag}
+        photoPosition="55% 50%"
       />
 
       <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
@@ -77,7 +81,7 @@ export default function AreaKumagayaPage() {
             question="熊谷市のどの地域でも、買い物代行を頼めますか？"
             answer={
               <>
-                熊谷市全域が対応エリアです。あわせて{others.join("・")}にも対応しています。エリア内でもお届け先の場所によってはご相談となる場合がありますので、まずはお住まいの地域をInstagramのDMでお知らせください（{site.launch.label}）。
+                熊谷市全域が対応エリアです。あわせて{others.join("・")}にも対応しています。エリア内でもお届け先の場所によってはご相談となる場合がありますので、まずはお住まいの地域をお電話またはInstagramのDMでお知らせください（{site.launch.label}）。
               </>
             }
           />
@@ -108,6 +112,16 @@ export default function AreaKumagayaPage() {
           </div>
         </div>
       </section>
+
+      <Reveal>
+        <PhotoFrame
+          photo={photos.residentialStreet}
+          className="aspect-[16/9] sm:aspect-[21/9]"
+          position="50% 58%"
+          sizes="100vw"
+          decorative
+        />
+      </Reveal>
 
       {/* 対応エリア */}
       <section className="mx-auto max-w-6xl px-5 py-20 sm:px-8 sm:py-28">

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
@@ -73,6 +74,18 @@ export default async function BlogPostPage({ params }: Props) {
           </div>
           <h1 className="mt-4 font-maru text-[1.7rem] font-bold leading-[1.55] tracking-[0.02em] sm:text-[2.1rem]">{post.title}</h1>
           <p className="mt-4 text-[13px] text-stone">文：{post.author}</p>
+          {post.image && post.image !== "/og.jpg" ? (
+            <div className="relative mt-8 aspect-[16/9] overflow-hidden bg-mint">
+              <Image
+                src={post.image}
+                alt=""
+                fill
+                priority
+                sizes="(min-width: 768px) 48rem, 100vw"
+                className="object-cover"
+              />
+            </div>
+          ) : null}
         </header>
 
         <div className="prose-blog mt-10 text-[0.97rem] leading-[2.1] sm:text-base">

@@ -1,18 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PageHeader from "@/components/ui/PageHeader";
+import { photos } from "@/data/photos";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Reveal from "@/components/ui/Reveal";
 import JsonLd from "@/components/ui/JsonLd";
 import LaunchNotice from "@/components/ui/LaunchNotice";
-import { contactChannels, site } from "@/data/site";
+import { site } from "@/data/site";
 import { pageMetadata } from "@/lib/seo";
 import { webPageJsonLd } from "@/lib/jsonld";
 import { ArrowRightIcon, CheckIcon, ExternalIcon, InstagramIcon, PhoneIcon } from "@/components/ui/icons";
 
-const TITLE = "お問い合わせ｜買い物のご相談はInstagramのDMから";
+const TITLE = "お問い合わせ｜買い物のご相談は電話・InstagramのDMから";
 const DESCRIPTION =
-  "ライフサポート熊谷へのお問い合わせ・買い物代行のご相談は、Instagram（@lifesupport_kumagaya）のDMで受け付けています。ご本人からも、離れて暮らすご家族からも。熊谷市・深谷市・行田市・東松山市対応。";
+  "ライフサポート熊谷へのお問い合わせ・買い物代行のご相談は、お電話（080-1243-7154）またはInstagram（@lifesupport_kumagaya）のDMで受け付けています。ご本人からも、離れて暮らすご家族からも。熊谷市・深谷市・行田市・東松山市対応。";
 
 export const metadata: Metadata = pageMetadata({
   title: TITLE,
@@ -28,18 +29,19 @@ const TELL_US = [
 ];
 
 export default function ContactPage() {
-  const channels = contactChannels();
   return (
     <>
       <JsonLd data={webPageJsonLd({ path: "/contact", name: TITLE, description: DESCRIPTION, type: "ContactPage" })} />
       <PageHeader
         en="Contact"
         title="お問い合わせ"
-        lead="買い物のご相談・ご依頼・サービスについてのご質問は、InstagramのDMで受け付けています。「これって頼める？」という段階で構いません。"
+        lead="買い物のご相談・ご依頼・サービスについてのご質問は、お電話またはInstagramのDMで受け付けています。「これって頼める？」という段階で構いません。"
         crumbs={[
           { name: "ホーム", path: "/" },
           { name: "お問い合わせ", path: "/contact" },
         ]}
+        photo={photos.deliveryBoxRice}
+        photoPosition="50% 50%"
       />
 
       <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
@@ -48,25 +50,37 @@ export default function ContactPage() {
             <SectionHeading
               en="How to reach us"
               title="ご相談方法"
-              lead="現在、ご相談はInstagramのDMでお受けしています。ご本人からも、離れて暮らすご家族からもご連絡ください。"
+              lead="お電話とInstagramのDMでご相談をお受けしています。ご本人からも、離れて暮らすご家族からもご連絡ください。"
             />
             <LaunchNotice className="mt-6" />
           </Reveal>
           <Reveal delay={0.08}>
             <div className="flex flex-col gap-3">
-              {channels.map((c) => (
+              {site.tel && site.telLink ? (
                 <a
-                  key={c.key}
-                  href={c.href}
-                  target={c.external ? "_blank" : undefined}
-                  rel={c.external ? "noopener noreferrer" : undefined}
-                  className={c.key === "instagram" ? "btn btn-primary w-full" : "btn btn-outline w-full"}
+                  href={site.telLink}
+                  className="flex flex-col items-center gap-1 rounded-3xl bg-mint px-6 py-7 text-center transition-transform hover:-translate-y-0.5"
                 >
-                  {c.key === "instagram" ? <InstagramIcon className="h-5 w-5" /> : <PhoneIcon className="h-5 w-5" />}
-                  <span>{c.label}</span>
-                  {c.external ? <ExternalIcon className="h-4 w-4 opacity-70" /> : null}
+                  <span className="inline-flex items-center gap-2 text-[13px] font-medium tracking-wider text-moss">
+                    <PhoneIcon className="h-4 w-4" />
+                    お電話でのご相談
+                  </span>
+                  <span className="font-maru text-[2rem] font-bold tracking-[0.02em] text-ink sm:text-[2.4rem]">
+                    {site.tel}
+                  </span>
+                  <span className="text-[12px] text-stone">スマートフォンはタップで発信できます</span>
                 </a>
-              ))}
+              ) : null}
+              <a
+                href={site.instagramDm}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-primary w-full"
+              >
+                <InstagramIcon className="h-5 w-5" />
+                <span>InstagramのDMで相談する</span>
+                <ExternalIcon className="h-4 w-4 opacity-70" />
+              </a>
               <a
                 href={site.instagram}
                 target="_blank"

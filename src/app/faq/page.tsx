@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PageHeader from "@/components/ui/PageHeader";
+import { photos } from "@/data/photos";
 import Faq from "@/components/ui/Faq";
 import ContactCta from "@/components/ui/ContactCta";
 import JsonLd from "@/components/ui/JsonLd";
@@ -32,6 +33,8 @@ export default function FaqPage() {
           { name: "ホーム", path: "/" },
           { name: "よくある質問", path: "/faq" },
         ]}
+        photo={photos.unpackingVegetables}
+        photoPosition="50% 45%"
       />
       <Faq
         items={FAQ_GENERAL}

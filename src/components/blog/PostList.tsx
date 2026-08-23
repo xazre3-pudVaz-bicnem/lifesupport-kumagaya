@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import Reveal from "@/components/ui/Reveal";
 import { formatDate, type BlogMeta } from "@/lib/blog";
@@ -12,13 +13,25 @@ export default function PostList({ posts }: { posts: BlogMeta[] }) {
       {posts.map((post, i) => (
         <Reveal key={post.slug} as="li" delay={(i % 6) * 0.04} className="border-b hairline">
           <article>
-            <Link href={`/blog/${post.slug}`} className="group grid gap-2 py-7 sm:grid-cols-[8rem_1fr] sm:gap-8">
-              <div className="flex gap-3 text-[11.5px] tracking-wider text-stone sm:flex-col sm:gap-1">
-                <time dateTime={post.date}>{formatDate(post.date)}</time>
-                <span className="text-moss">{post.category}</span>
+            <Link
+              href={`/blog/${post.slug}`}
+              className="group grid gap-4 py-7 sm:grid-cols-[11rem_1fr] sm:items-start sm:gap-8"
+            >
+              <div className="relative aspect-[16/10] overflow-hidden bg-mint sm:aspect-[4/3]">
+                <Image
+                  src={post.image}
+                  alt=""
+                  fill
+                  sizes="(min-width: 640px) 11rem, 100vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                />
               </div>
               <div>
-                <h2 className="font-maru text-[1.08rem] font-bold leading-[1.7] underline-offset-4 group-hover:underline sm:text-[1.15rem]">
+                <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1 text-[11.5px] tracking-wider text-stone">
+                  <time dateTime={post.date}>{formatDate(post.date)}</time>
+                  <span className="text-moss">{post.category}</span>
+                </div>
+                <h2 className="mt-2 font-maru text-[1.08rem] font-bold leading-[1.7] underline-offset-4 group-hover:underline sm:text-[1.15rem]">
                   {post.title}
                 </h2>
                 <p className="mt-2 line-clamp-2 text-[0.9rem] leading-[1.9] text-ink-soft">{post.description}</p>

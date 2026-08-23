@@ -11,7 +11,7 @@ keywords:
   - 介護保険 買い物代行
   - 介護保険でできないこと 買い物
 targetKeyword: 買い物 介護保険 どこまで
-image: /og.jpg
+image: /images/senior/kumagaya-senior-writing-memo.jpg
 author: ライフサポート熊谷
 topicId: d-shopping-scope
 pillar: /insurance-outside

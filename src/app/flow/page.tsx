@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PageHeader from "@/components/ui/PageHeader";
+import { photos } from "@/data/photos";
+import PhotoFrame from "@/components/ui/Photo";
 import AnswerBox from "@/components/ui/AnswerBox";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Reveal from "@/components/ui/Reveal";
@@ -47,6 +49,8 @@ export default function FlowPage() {
           { name: "ホーム", path: "/" },
           { name: "ご利用の流れ", path: "/flow" },
         ]}
+        photo={photos.listAndTote}
+        photoPosition="50% 50%"
       />
 
       <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
@@ -55,7 +59,7 @@ export default function FlowPage() {
             question="買い物代行は、どうやって頼めばいいですか？"
             answer={
               <>
-                Instagram（{site.instagramId}）のDMで、お届け先の地域と買いたい物をお知らせください。内容を確認し、ご希望の日時に合わせてお買い物・お届けをします。料金とお支払い方法はご相談時にご案内します。
+                お電話（{site.tel}）またはInstagram（{site.instagramId}）のDMで、お届け先の地域と買いたい物をお知らせください。内容を確認し、ご希望の日時に合わせてお買い物・お届けをします。料金とお支払い方法はご相談時にご案内します。
               </>
             }
           />
@@ -105,6 +109,13 @@ export default function FlowPage() {
                 </li>
               ))}
             </ul>
+            <PhotoFrame
+              photo={photos.memoVegetables}
+              className="mt-8 aspect-[16/10]"
+              position="50% 50%"
+              sizes="(min-width: 1024px) 40rem, 100vw"
+              decorative
+            />
             <div className="mt-8 border-l-[3px] border-sprout pl-5">
               <p className="font-maru text-[1rem] font-bold">売り切れ・見当たらないときは</p>
               <p className="mt-2 text-[0.92rem] leading-[2] text-ink-soft">

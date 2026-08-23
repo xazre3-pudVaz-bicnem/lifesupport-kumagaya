@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PageHeader from "@/components/ui/PageHeader";
+import { photos } from "@/data/photos";
+import PhotoFrame from "@/components/ui/Photo";
 import AnswerBox from "@/components/ui/AnswerBox";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Reveal from "@/components/ui/Reveal";
@@ -65,6 +67,8 @@ export default function ForSeniorsPage() {
           { name: "ホーム", path: "/" },
           { name: "高齢者の買い物支援", path: "/for-seniors" },
         ]}
+        photo={photos.shoppingListKitchen}
+        photoPosition="50% 45%"
       />
 
       <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
@@ -94,6 +98,15 @@ export default function ForSeniorsPage() {
               </Reveal>
             ))}
           </div>
+          <Reveal delay={0.1}>
+            <PhotoFrame
+              photo={photos.carryingBags}
+              className="mt-14 aspect-[16/9] sm:aspect-[21/9]"
+              position="50% 55%"
+              sizes="(min-width: 1024px) 72rem, 100vw"
+              decorative
+            />
+          </Reveal>
         </div>
       </section>
 
@@ -125,6 +138,13 @@ export default function ForSeniorsPage() {
                 何を買うかを決めるのは、いつも通りご本人です。銘柄や数量、売り切れのときにどうするか。分からないことは勝手に判断せず、確認してから動きます。
               </p>
             </div>
+            <PhotoFrame
+              photo={photos.heavyDrinks}
+              className="mt-8 aspect-[16/10]"
+              position="50% 45%"
+              sizes="(min-width: 1024px) 40rem, 100vw"
+              decorative
+            />
             <Link href="/shopping-support" className="link-line mt-8 text-[0.95rem]">
               買い物代行サービスの詳細 <ArrowRightIcon className="h-4 w-4" />
             </Link>

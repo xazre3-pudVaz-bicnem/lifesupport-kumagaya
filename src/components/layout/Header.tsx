@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { site } from "@/data/site";
 import { NAV } from "@/data/nav";
-import { ExternalIcon, InstagramIcon, LogoMark } from "@/components/ui/icons";
+import { ExternalIcon, InstagramIcon, LogoMark, PhoneIcon } from "@/components/ui/icons";
 
 /**
  * 固定ヘッダー。最上部では背景に溶け、スクロールで白い面＋細い罫線になる。
@@ -49,14 +49,14 @@ export default function Header() {
         </Link>
 
         {/* PCナビ */}
-        <nav aria-label="メイン" className="hidden items-center gap-5 xl:flex 2xl:gap-7">
+        <nav aria-label="メイン" className="hidden items-center gap-3.5 xl:flex 2xl:gap-6">
           {NAV.filter((n) => n.href !== "/faq").map((item) => {
             const active = pathname === item.href || pathname?.startsWith(`${item.href}/`);
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`relative whitespace-nowrap text-[13px] tracking-[0.04em] transition-colors hover:text-moss ${
+                className={`relative whitespace-nowrap text-[12.5px] tracking-[0.02em] transition-colors hover:text-moss 2xl:text-[13px] 2xl:tracking-[0.04em] ${
                   active ? "text-moss" : "text-ink"
                 }`}
               >
@@ -67,13 +67,35 @@ export default function Header() {
           })}
         </nav>
 
-        {/* PC：Instagram導線 */}
-        <div className="hidden items-center gap-3 xl:flex">
+        {/* PC：電話・Instagram導線 */}
+        <div className="hidden shrink-0 items-center gap-3 xl:flex 2xl:gap-4">
+          {site.tel && site.telLink ? (
+            <>
+              {/* 幅に余裕のある画面では番号を出し、狭い画面はアイコンのみにする */}
+              <a
+                href={site.telLink}
+                aria-label={`お電話でのご相談 ${site.tel}`}
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-line text-moss transition-colors hover:border-moss hover:bg-mint 2xl:hidden"
+              >
+                <PhoneIcon className="h-5 w-5" />
+              </a>
+              <a
+                href={site.telLink}
+                className="group hidden shrink-0 flex-col items-end whitespace-nowrap leading-none 2xl:flex"
+              >
+                <span className="text-[10px] tracking-[0.16em] text-moss">お電話でのご相談</span>
+                <span className="mt-1 inline-flex items-center gap-1.5 font-maru text-[1.05rem] font-bold tracking-[0.02em] text-ink transition-colors group-hover:text-moss">
+                  <PhoneIcon className="h-4 w-4 text-moss" />
+                  {site.tel}
+                </span>
+              </a>
+            </>
+          ) : null}
           <a
             href={site.instagramDm}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex min-h-11 items-center gap-2 rounded-full bg-moss px-5 text-[13px] font-medium tracking-wider text-white transition-colors hover:bg-moss-deep"
+            className="inline-flex min-h-11 shrink-0 items-center gap-2 whitespace-nowrap rounded-full bg-moss px-4 text-[13px] font-medium tracking-wider text-white transition-colors hover:bg-moss-deep 2xl:px-5"
           >
             <InstagramIcon className="h-4 w-4" />
             DMで相談
@@ -115,6 +137,18 @@ export default function Header() {
             ))}
           </ul>
           <div className="space-y-3 px-6 pb-28 pt-8 sm:px-10">
+            {site.tel && site.telLink ? (
+              <a
+                href={site.telLink}
+                className="flex flex-col items-center gap-1 rounded-3xl bg-mint px-6 py-5 text-center"
+              >
+                <span className="inline-flex items-center gap-2 text-[12px] font-medium tracking-wider text-moss">
+                  <PhoneIcon className="h-4 w-4" />
+                  お電話でのご相談
+                </span>
+                <span className="font-maru text-[1.7rem] font-bold tracking-[0.02em] text-ink">{site.tel}</span>
+              </a>
+            ) : null}
             <a href={site.instagramDm} target="_blank" rel="noopener noreferrer" className="btn btn-primary w-full">
               <InstagramIcon className="h-5 w-5" />
               InstagramのDMで相談する

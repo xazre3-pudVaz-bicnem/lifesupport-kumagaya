@@ -1,6 +1,8 @@
 import Link from "next/link";
 import Reveal from "@/components/ui/Reveal";
 import SectionHeading from "@/components/ui/SectionHeading";
+import PhotoFrame from "@/components/ui/Photo";
+import { photos } from "@/data/photos";
 import { ITEMS, SCENES } from "@/data/content";
 import { ArrowRightIcon, CheckIcon } from "@/components/ui/icons";
 
@@ -30,7 +32,15 @@ export default function Service() {
             />
           </Reveal>
           <Reveal delay={0.08}>
-            <Link href="/shopping-support" className="link-line mt-8 text-[0.95rem]">
+            <PhotoFrame
+              photo={photos.selectingVegetables}
+              className="mt-8 aspect-[4/3]"
+              position="55% 50%"
+              sizes="(min-width: 1024px) 30rem, 100vw"
+            />
+          </Reveal>
+          <Reveal delay={0.12}>
+            <Link href="/shopping-support" className="link-line mt-7 text-[0.95rem]">
               買い物代行サービスの詳細
               <ArrowRightIcon className="h-4 w-4" />
             </Link>
@@ -54,6 +64,15 @@ export default function Service() {
               </Reveal>
             ))}
           </dl>
+
+          <Reveal delay={0.06}>
+            <PhotoFrame
+              photo={photos.groceriesAndGoods}
+              className="mt-8 aspect-[16/10]"
+              position="50% 50%"
+              sizes="(min-width: 1024px) 38rem, 100vw"
+            />
+          </Reveal>
 
           <Reveal>
             <h3 className="mt-12 font-maru text-[1.1rem] font-bold tracking-[0.04em]">こんなときに</h3>

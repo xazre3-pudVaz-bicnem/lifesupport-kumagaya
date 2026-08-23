@@ -1,5 +1,7 @@
 import Reveal from "@/components/ui/Reveal";
 import SectionHeading from "@/components/ui/SectionHeading";
+import PhotoFrame from "@/components/ui/Photo";
+import { photos } from "@/data/photos";
 import { site } from "@/data/site";
 import { ExternalIcon, InstagramIcon } from "@/components/ui/icons";
 
@@ -23,19 +25,21 @@ export default function InstagramSection() {
             title="日々の発信は、Instagramで。"
             lead="サービスの考え方や、よくあるご質問への回答を、イラストで分かりやすく投稿しています。ご相談もDMから受け付けています。"
           />
-          <a
-            href={site.instagram}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-outline mt-8"
-          >
+          <a href={site.instagram} target="_blank" rel="noopener noreferrer" className="btn btn-outline mt-8">
             <InstagramIcon className="h-5 w-5" />
             {site.instagramId} を見る
             <ExternalIcon className="h-4 w-4 opacity-70" />
           </a>
         </Reveal>
         <Reveal delay={0.1}>
-          <ul className="border-t hairline">
+          <PhotoFrame
+            photo={photos.toteGroceries}
+            className="aspect-[16/10]"
+            position="50% 50%"
+            sizes="(min-width: 1024px) 34rem, 100vw"
+            decorative
+          />
+          <ul className="mt-6 border-t hairline">
             {topics.map((t) => (
               <li key={t} className="border-b hairline">
                 <a

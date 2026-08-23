@@ -11,7 +11,8 @@ npm run dev        # http://localhost:3000
 npm run lint
 npm run typecheck
 npm run build
-npm run assets     # OGP画像・アイコンを SVG から再生成（sharp）
+npm run images     # public 直下の元写真を public/images へ最適化（sharp）
+npm run assets     # OGP画像・アイコンを再生成（ヒーロー写真＋コピー）
 ```
 
 環境変数は `.env.example` を参照。
@@ -36,6 +37,7 @@ src/components/
   blog/                  PostList / RelatedPosts
 src/data/
   site.ts                事業者情報の一元管理（NAP統一・未確認項目は null）
+  photos.ts              写真の一元管理（パス・alt・サイズ）
   content.ts             文言データ（お困りごと・買えるもの・お約束・流れ）
   faq.ts                 FAQ（表示と FAQPage JSON-LD を同一データから生成）
   nav.ts
@@ -46,10 +48,19 @@ src/lib/
 content/blog/*.md        ブログ記事（自動生成＋手書き）
 scripts/
   generate-daily-post.ts 毎日1記事を Claude API で生成
+  prepare-images.ts      元写真のリネーム・最適化（assets/originals へ退避）
   make-assets.ts         OGP・アイコン生成
+public/images/           最適化済みの写真（hero / service / delivery / senior / family / home / still / area）
+assets/originals/        元写真（Git管理外）
 .github/workflows/daily-blog.yml
 TODO-CONTENT.md          オーナー確認が必要な情報
 ```
+
+## 写真
+
+- 元写真を `public` 直下に置いて `npm run images` を実行すると、`scripts/prepare-images.ts` の `MAP` に従ってリネーム・最適化し、`public/images/` へ出力する（元は `assets/originals/` に退避）
+- 表示側は `src/data/photos.ts` を参照する。`alt`・`width`・`height` はここで一元管理する
+- **現在の掲載写真は生成AIによるイメージ写真**。実在のスタッフ・利用者ではないため、フッターに注記を出し、alt では断定を避けている（`PHOTO_NOTE`）。実写に差し替える場合は `MAP` を書き換えて再実行する
 
 ## 事業情報の更新
 
@@ -80,4 +91,4 @@ npx tsx scripts/generate-daily-post.ts --dry-run
 | --- | --- | --- |
 | Secret | `ANTHROPIC_API_KEY` | Claude API |
 | Variable（任意） | `ANTHROPIC_MODEL` | モデル変更 |
-| Variable（任意） | `NEXT_PUBLIC_SITE_URL` | Actions 内ビルドの公開URL |
+| Variable（任意） | `NEXT_PUBLIC_SITE_URL` | 公開URLの上書き（未設定なら https://www.lifesupport2026.com） |

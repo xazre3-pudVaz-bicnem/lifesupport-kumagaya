@@ -44,12 +44,15 @@ export const site = {
     note: "現在、ご相談・お問い合わせを受け付けています。",
   },
 
-  /** 連絡先。Instagramで確認できたのはDM受付のみ。電話番号は未確認のため null */
+  /** 連絡先。電話番号はオーナー確認済み（2026年8月23日） */
   instagram: "https://www.instagram.com/lifesupport_kumagaya/",
   instagramId: "@lifesupport_kumagaya",
   instagramDm: "https://ig.me/m/lifesupport_kumagaya",
-  tel: null as string | null,
-  telLink: null as string | null,
+  /** 表示用（この表記でサイト全体・GoogleビジネスプロフィールのNAPを統一する） */
+  tel: "080-1243-7154" as string | null,
+  telLink: "tel:08012437154" as string | null,
+  /** JSON-LD 用の国際表記 */
+  telIntl: "+81-80-1243-7154",
   line: null as string | null,
   email: null as string | null,
 
@@ -60,29 +63,32 @@ export const site = {
   payment: null as string | null,
 
   /**
-   * 公開URL。本番ドメイン確定後は NEXT_PUBLIC_SITE_URL を設定する。
+   * 公開URL（本番ドメイン。2026年8月23日にオーナー確認）。
    * canonical・OGP・sitemap・JSON-LD すべてこの値を基準にする。
+   * プレビュー環境などで変えたい場合のみ NEXT_PUBLIC_SITE_URL で上書きする。
    */
-  url: envUrl || "https://lifesupport-kumagaya.vercel.app",
+  url: envUrl || "https://www.lifesupport2026.com",
 
   /** ブログの著者表記（資格表記はしない） */
   author: "ライフサポート熊谷",
 } as const;
 
-/** 電話・LINEなど、確認できた問い合わせ手段だけを返す */
+/**
+ * 確認できた問い合わせ手段だけを返す。
+ * 電話を先頭にするのは、利用される方ご本人にとって最も使いやすい手段のため。
+ */
 export function contactChannels() {
-  const channels: { key: string; label: string; href: string; external: boolean; note?: string }[] = [
-    {
-      key: "instagram",
-      label: "InstagramのDMで相談する",
-      href: site.instagramDm,
-      external: true,
-      note: site.instagramId,
-    },
-  ];
+  const channels: { key: string; label: string; href: string; external: boolean; note?: string }[] = [];
   if (site.tel && site.telLink) {
-    channels.push({ key: "tel", label: `電話 ${site.tel}`, href: site.telLink, external: false });
+    channels.push({ key: "tel", label: site.tel, href: site.telLink, external: false, note: "お電話でのご相談" });
   }
+  channels.push({
+    key: "instagram",
+    label: "InstagramのDMで相談する",
+    href: site.instagramDm,
+    external: true,
+    note: site.instagramId,
+  });
   if (site.line) {
     channels.push({ key: "line", label: "LINEで相談する", href: site.line, external: true });
   }

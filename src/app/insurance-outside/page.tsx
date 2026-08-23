@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PageHeader from "@/components/ui/PageHeader";
+import { photos } from "@/data/photos";
+import PhotoFrame from "@/components/ui/Photo";
 import AnswerBox from "@/components/ui/AnswerBox";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Reveal from "@/components/ui/Reveal";
@@ -99,6 +101,8 @@ export default function InsuranceOutsidePage() {
           { name: "ホーム", path: "/" },
           { name: "介護保険外の買い物支援", path: "/insurance-outside" },
         ]}
+        photo={photos.writingMemo}
+        photoPosition="50% 45%"
       />
 
       <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
@@ -226,6 +230,16 @@ export default function InsuranceOutsidePage() {
           </div>
         </div>
       </section>
+
+      <Reveal>
+        <PhotoFrame
+          photo={photos.doorstepSmile}
+          className="aspect-[16/9] sm:aspect-[21/9]"
+          position="50% 48%"
+          sizes="100vw"
+          decorative
+        />
+      </Reveal>
 
       {/* ライフサポート熊谷は買い物代行に対応 */}
       <section className="mx-auto max-w-6xl px-5 py-20 sm:px-8 sm:py-28">

@@ -25,6 +25,7 @@ import path from "node:path";
 import matter from "gray-matter";
 import Anthropic from "@anthropic-ai/sdk";
 import { site } from "../src/data/site";
+import { photos } from "../src/data/photos";
 
 // ---- 設定 -------------------------------------------------------------
 const DEFAULT_MODEL = "claude-haiku-4-5";
@@ -49,9 +50,10 @@ const FACTS = [
   "利用場面：体調不良のとき／仕事や育児で忙しいとき／重い物を運びたくないとき／外出が難しいとき／離れて暮らす家族の買い物を頼みたいとき",
   "大切にしていること：安心・丁寧・地域とのつながり。安心して「ちょっとお願い」と言える存在を目指している",
   "3つのお約束：商品とお金を丁寧に扱う／ご依頼内容をしっかり確認する／分からないことを勝手に判断しない（売り切れや指定商品が見つからないときは、できる限りお客様に確認してから対応する）",
-  "依頼方法：InstagramのDM。ご本人からも、ご家族（遠方在住でも可）からも依頼できる",
+  `依頼方法：電話（${site.tel}）またはInstagramのDM。ご本人からも、ご家族（遠方在住でも可）からも依頼できる`,
   "料金・お支払い方法・受付時間・当日対応の可否・定期利用の条件：未公開。記事では「ご相談時に案内」とだけ書き、金額や時間を創作しない",
-  "所在地・電話番号・メールアドレス・公式LINE：未公開。記事に書かない",
+  "所在地・メールアドレス・公式LINE：未公開。記事に書かない",
+  "電話番号は公開しているが、記事本文には書かない（表記ゆれを防ぐため、連絡先は固定ページに集約する）。記事では「お電話またはInstagramのDMで相談できる」とだけ書く",
 ] as const;
 
 /**
@@ -80,7 +82,7 @@ const INTERNAL_LINKS = [
   { url: "/flow", label: "ご利用の流れ" },
   { url: "/faq", label: "よくある質問" },
   { url: "/about", label: "私たちについて（サービス開始の想い）" },
-  { url: "/contact", label: "お問い合わせ（InstagramのDM）" },
+  { url: "/contact", label: "お問い合わせ（電話・InstagramのDM）" },
 ];
 
 // ---- トピックプール（トピッククラスター） ------------------------------
@@ -193,6 +195,40 @@ const CTA_ANGLES = [
   "CTAらしい文言は書かず、余韻のある一文で静かに終える",
 ];
 
+/** カテゴリーごとのアイキャッチ候補。順番に回して偏りを防ぐ */
+const IMAGE_POOL: Record<string, string[]> = {
+  [CAT.A]: [
+    photos.selectingVegetables.src,
+    photos.groceriesAndGoods.src,
+    photos.toteGroceries.src,
+    photos.shoppingBasket.src,
+  ],
+  [CAT.B]: [
+    photos.carryingBags.src,
+    photos.shoppingListKitchen.src,
+    photos.heavyDrinks.src,
+    photos.writingMemo.src,
+  ],
+  [CAT.C]: [
+    photos.familyLiving.src,
+    photos.familySofa.src,
+    photos.deliveryBoxRice.src,
+    photos.doorstepSmile.src,
+  ],
+  [CAT.D]: [
+    photos.memoVegetables.src,
+    photos.listAndTote.src,
+    photos.writingMemo.src,
+    photos.unpackingVegetables.src,
+  ],
+  [CAT.E]: [
+    photos.residentialStreet.src,
+    photos.deliveryPaperBag.src,
+    photos.riceAndWater.src,
+    photos.doorstepSmile.src,
+  ],
+};
+
 /** 生成結果に含まれていたら保存しない表現（提供サービスの捏造・資格詐称・テンプレ表現） */
 const FORBIDDEN_PATTERNS: { re: RegExp; reason: string }[] = [
   {
@@ -229,6 +265,7 @@ type ExistingPost = {
   targetKeyword: string;
   category: string;
   keywords: string[];
+  image: string;
 };
 
 /** 既存記事のメタ情報を読み込む（重複・類似判定に使用） */
@@ -248,6 +285,7 @@ function readExistingPosts(): ExistingPost[] {
         targetKeyword: String(data.targetKeyword ?? ""),
         category: String(data.category ?? ""),
         keywords: Array.isArray(data.keywords) ? data.keywords.map(String) : [],
+        image: String(data.image ?? ""),
       };
     });
 }
@@ -274,6 +312,18 @@ function pickTopic(existing: ExistingPost[]): { topic: Topic; fresh: boolean } {
 function uniqueSlug(base: string): string {
   if (!fs.existsSync(path.join(BLOG_DIR, `${base}.md`))) return base;
   return `${base}-${stamp()}`;
+}
+
+/** カテゴリー内で使用回数の少ない写真を選ぶ（直近3記事と同じ写真は避ける） */
+function pickImage(category: string, existing: ExistingPost[]): string {
+  const pool = IMAGE_POOL[category] ?? IMAGE_POOL[CAT.A];
+  const counts = new Map<string, number>();
+  for (const p of existing) counts.set(p.image, (counts.get(p.image) ?? 0) + 1);
+  const recent = new Set(
+    [...existing].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 3).map((p) => p.image),
+  );
+  const sorted = [...pool].sort((a, b) => (counts.get(a) ?? 0) - (counts.get(b) ?? 0));
+  return sorted.find((src) => !recent.has(src)) ?? sorted[0];
 }
 
 /** 文字バイグラムの Jaccard 類似度（0〜1） */
@@ -346,6 +396,7 @@ async function main() {
   const { topic, fresh } = pickTopic(existing);
   const date = today();
   const slug = uniqueSlug(topic.slugBase);
+  const image = pickImage(topic.category, existing);
   const structure = STRUCTURES[existing.length % STRUCTURES.length];
   const ctaAngle = CTA_ANGLES[existing.length % CTA_ANGLES.length];
   const pillar = INTERNAL_LINKS.find((l) => {
@@ -363,6 +414,7 @@ async function main() {
   console.log(`カテゴリ  (category) : ${topic.category}`);
   console.log(`ピラー    (pillar)   : ${pillar.url}`);
   console.log(`slug                 : ${slug}`);
+  console.log(`画像      (image)    : ${image}`);
   console.log(`構成      (structure): ${structure}`);
   console.log(`YMYL                 : ${topic.ymyl ? "yes" : "no"}`);
   console.log(`再執筆(全消化後)     : ${fresh ? "no" : "yes"}`);
@@ -549,7 +601,7 @@ async function main() {
     category: topic.category,
     keywords,
     targetKeyword: topic.targetKeyword,
-    image: "/og.jpg",
+    image,
     author: site.author,
     topicId: topic.id,
     pillar: pillar.url,

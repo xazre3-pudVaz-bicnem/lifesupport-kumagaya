@@ -13,7 +13,7 @@ export default function SectionHeading({ en, title, lead, as = "h2", align = "le
   return (
     <div className={`${align === "center" ? "text-center" : ""} ${className ?? ""}`}>
       {en ? <p className={`eyebrow ${align === "center" ? "justify-center" : ""}`}>{en}</p> : null}
-      <Tag className="mt-4 font-maru text-[1.6rem] font-bold leading-[1.5] tracking-[0.02em] sm:text-[2rem] lg:text-[2.25rem]">
+      <Tag className="mt-4 text-balance font-maru text-[1.6rem] font-bold leading-[1.5] tracking-[0.02em] sm:text-[1.9rem] lg:text-[2.1rem]">
         {title}
       </Tag>
       {lead ? (

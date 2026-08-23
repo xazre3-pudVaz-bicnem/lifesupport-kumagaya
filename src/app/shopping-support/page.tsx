@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PageHeader from "@/components/ui/PageHeader";
+import { photos } from "@/data/photos";
+import PhotoFrame from "@/components/ui/Photo";
 import AnswerBox from "@/components/ui/AnswerBox";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Reveal from "@/components/ui/Reveal";
@@ -50,6 +52,8 @@ export default function ShoppingSupportPage() {
           { name: "ホーム", path: "/" },
           { name: "買い物代行について", path: "/shopping-support" },
         ]}
+        photo={photos.selectingVegetables}
+        photoPosition="55% 45%"
       />
 
       <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
@@ -58,7 +62,7 @@ export default function ShoppingSupportPage() {
             question="熊谷市で買い物代行を頼むには、どうすればいいですか？"
             answer={
               <>
-                ライフサポート熊谷のInstagram（{site.instagramId}）のDMから、買いたい物とお届け先の地域をお知らせください。内容を確認のうえ、対応できる形をご案内します。対象は熊谷市・深谷市・行田市・東松山市。介護認定の有無や年齢は問いません（{site.launch.label}）。
+                お電話（{site.tel}）またはInstagram（{site.instagramId}）のDMで、買いたい物とお届け先の地域をお知らせください。内容を確認のうえ、対応できる形をご案内します。対象は熊谷市・深谷市・行田市・東松山市。介護認定の有無や年齢は問いません（{site.launch.label}）。
               </>
             }
           />
@@ -93,6 +97,15 @@ export default function ShoppingSupportPage() {
                   </Reveal>
                 ))}
               </dl>
+              <Reveal delay={0.06}>
+                <PhotoFrame
+                  photo={photos.groceriesAndGoods}
+                  className="mt-8 aspect-[16/10]"
+                  position="50% 50%"
+                  sizes="(min-width: 1024px) 40rem, 100vw"
+                  decorative
+                />
+              </Reveal>
               <Reveal>
                 <h3 className="mt-12 font-maru text-[1.1rem] font-bold tracking-[0.04em]">こんなときに</h3>
               </Reveal>

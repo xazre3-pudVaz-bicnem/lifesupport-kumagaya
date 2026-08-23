@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import PageHeader from "@/components/ui/PageHeader";
+import { photos } from "@/data/photos";
 import JsonLd from "@/components/ui/JsonLd";
 import ContactCta from "@/components/ui/ContactCta";
 import PostList, { CategoryNav, Pagination } from "@/components/blog/PostList";
@@ -33,6 +34,8 @@ export default function BlogPage() {
           { name: "ホーム", path: "/" },
           { name: "お役立ち情報", path: "/blog" },
         ]}
+        photo={photos.memoVegetables}
+        photoPosition="50% 50%"
       />
       <div className="mx-auto max-w-4xl px-5 pb-20 pt-10 sm:px-8 sm:pb-28">
         <CategoryNav categories={categories} />

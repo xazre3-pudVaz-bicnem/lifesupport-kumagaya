@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import PageHeader from "@/components/ui/PageHeader";
+import { photos } from "@/data/photos";
 import ContactCta from "@/components/ui/ContactCta";
 import PostList, { CategoryNav } from "@/components/blog/PostList";
 import { BLOG_CATEGORIES, categoryName, getBlogCategoriesInUse, getBlogPostsByCategory } from "@/lib/blog";
@@ -55,6 +56,8 @@ export default async function BlogCategoryPage({ params }: Props) {
           { name: "お役立ち情報", path: "/blog" },
           { name, path: `/blog/category/${slug}` },
         ]}
+        photo={photos.toteGroceries}
+        photoPosition="50% 50%"
       />
       <div className="mx-auto max-w-4xl px-5 pb-20 pt-10 sm:px-8 sm:pb-28">
         <CategoryNav categories={categories} current={slug} />

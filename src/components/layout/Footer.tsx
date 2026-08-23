@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { site } from "@/data/site";
 import { FOOTER_SUB, NAV } from "@/data/nav";
+import { PHOTO_NOTE } from "@/data/photos";
 import { InstagramIcon, LogoMark } from "@/components/ui/icons";
 
 /**
@@ -101,6 +102,8 @@ export default function Footer() {
               ライフサポート熊谷は介護保険外のサービスです。
               <br />
               現在提供しているサービスは買い物代行のみです。
+              <br />
+              {PHOTO_NOTE}
             </p>
           </nav>
         </div>
