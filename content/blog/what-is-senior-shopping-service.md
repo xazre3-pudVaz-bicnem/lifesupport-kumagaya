@@ -11,7 +11,7 @@ keywords:
   - 買い物支援 民間サービス
   - 高齢者 買い物 サポート
 targetKeyword: 高齢者向け 買い物代行 とは
-image: /og.jpg
+image: /images/service/kumagaya-staff-selecting-vegetables.jpg
 author: ライフサポート熊谷
 topicId: a-what-is
 pillar: /shopping-support
