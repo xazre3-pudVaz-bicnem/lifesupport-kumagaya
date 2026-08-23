@@ -24,6 +24,14 @@ const WW = 1672;
 const WH = 941;
 
 export const photos = {
+  // ---- 代表（実写。イメージ写真ではない） ----
+  representative: {
+    src: "/images/about/kumagaya-representative-saito-takumi.jpg",
+    alt: "ライフサポート熊谷 代表の齊藤匠。緑の木々を背景に、スーツ姿で微笑んでいる",
+    width: 395,
+    height: 480,
+  },
+
   // ---- ヒーロー ----
   /** PC用ヒーロー（16:9・左に余白があり文字を載せられる） */
   hero: {
@@ -166,5 +174,8 @@ export const photos = {
 
 export type PhotoKey = keyof typeof photos;
 
-/** 掲載写真に添える注記（イメージであることを明示する） */
-export const PHOTO_NOTE = "※写真はサービス内容を分かりやすくお伝えするためのイメージです。";
+/**
+ * 掲載写真に添える注記。
+ * 代表者の写真は実写のため、対象を「お買い物・お届けの様子」に限定して書く。
+ */
+export const PHOTO_NOTE = "※お買い物やお届けの様子の写真はイメージです。";

@@ -82,6 +82,7 @@ const INTERNAL_LINKS = [
   { url: "/flow", label: "ご利用の流れ" },
   { url: "/faq", label: "よくある質問" },
   { url: "/about", label: "私たちについて（サービス開始の想い）" },
+  { url: "/message", label: "代表挨拶（代表の経歴と、買い物代行を始めた理由）" },
   { url: "/contact", label: "お問い合わせ（電話・InstagramのDM）" },
 ];
 

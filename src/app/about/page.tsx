@@ -10,6 +10,7 @@ import JsonLd from "@/components/ui/JsonLd";
 import LaunchNotice from "@/components/ui/LaunchNotice";
 import Values from "@/components/sections/home/Values";
 import { site } from "@/data/site";
+import { representative } from "@/data/representative";
 import { pageMetadata } from "@/lib/seo";
 import { webPageJsonLd } from "@/lib/jsonld";
 import { ArrowRightIcon, ExternalIcon, InstagramIcon } from "@/components/ui/icons";
@@ -67,6 +68,32 @@ export default function AboutPage() {
             </div>
           </Reveal>
         </div>
+
+        {/* 代表挨拶への導線 */}
+        <Reveal>
+          <div className="mt-16 grid items-center gap-8 border-t hairline pt-12 sm:grid-cols-[auto_1fr] sm:gap-10">
+            <PhotoFrame
+              photo={photos.representative}
+              className="aspect-[395/480] w-40 shrink-0 sm:w-48"
+              sizes="12rem"
+            />
+            <div>
+              <p className="text-[13px] tracking-[0.14em] text-moss">{representative.title}</p>
+              <p className="mt-2 font-maru text-[1.5rem] font-bold tracking-[0.1em]">
+                {representative.name}
+                <span className="ml-3 align-middle text-[0.72rem] font-medium tracking-[0.1em] text-stone">
+                  {representative.nameKana}
+                </span>
+              </p>
+              <p className="mt-4 max-w-xl text-[0.93rem] leading-[2.05] text-ink-soft">
+                家族の介護をきっかけに福祉の道へ進み、今も現場に立ちながら、熊谷市で買い物代行を始めました。サービスに込めた想いと、これまでの歩みをお伝えします。
+              </p>
+              <Link href="/message" className="link-line mt-5 text-[0.95rem]">
+                代表挨拶を読む <ArrowRightIcon className="h-4 w-4" />
+              </Link>
+            </div>
+          </div>
+        </Reveal>
       </section>
 
       <Reveal>

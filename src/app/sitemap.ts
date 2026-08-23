@@ -12,6 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${site.url}/insurance-outside`, changeFrequency: "monthly", priority: 0.9 },
     { url: `${site.url}/area/kumagaya`, changeFrequency: "monthly", priority: 0.8 },
     { url: `${site.url}/about`, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${site.url}/message`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${site.url}/flow`, changeFrequency: "monthly", priority: 0.8 },
     { url: `${site.url}/faq`, changeFrequency: "monthly", priority: 0.8 },
     { url: `${site.url}/contact`, changeFrequency: "monthly", priority: 0.7 },

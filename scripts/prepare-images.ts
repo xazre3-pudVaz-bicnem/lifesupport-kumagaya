@@ -20,6 +20,21 @@ const ORIGINALS = path.join(ROOT, "assets", "originals");
 
 const P = "ChatGPT Image 2026年8月23日 ";
 
+/**
+ * 切り出しが必要な写真。
+ * 代表プロフィールはインフォグラフィック（文字入り）のため、
+ * 人物部分だけを切り出して使う（文字は画像に頼らずHTMLで書く）。
+ */
+const CROPS: Record<string, { out: string; left: number; top: number; width: number; height: number }> = {
+  "S__26247175.jpg": {
+    out: "images/about/kumagaya-representative-saito-takumi.jpg",
+    left: 45,
+    top: 178,
+    width: 395,
+    height: 480,
+  },
+};
+
 /** 元ファイル名 → 出力パス（public からの相対） */
 const MAP: Record<string, string> = {
   // ---- ヒーロー（横長16:9・SPは4:3を使用） ----
@@ -77,10 +92,36 @@ async function convert(srcPath: string, outRel: string) {
   return { outRel, width: info.width, height: info.height };
 }
 
+/** 指定範囲を切り出して出力する（人物写真をトリミングしすぎないこと） */
+async function cropOne(srcPath: string, c: (typeof CROPS)[string]) {
+  const out = path.join(PUBLIC, c.out);
+  fs.mkdirSync(path.dirname(out), { recursive: true });
+  const info = await sharp(srcPath)
+    .rotate()
+    .extract({ left: c.left, top: c.top, width: c.width, height: c.height })
+    .jpeg({ quality: 88, mozjpeg: true, chromaSubsampling: "4:4:4" })
+    .toFile(out);
+  console.log(`✂ ${c.out}  ${info.width}x${info.height}  ${Math.round(info.size / 1024)}KB`);
+  return { outRel: c.out, width: info.width, height: info.height };
+}
+
 async function main() {
   fs.mkdirSync(ORIGINALS, { recursive: true });
   const results: { outRel: string; width: number; height: number }[] = [];
   const missing: string[] = [];
+
+  // ---- 切り出しが必要な写真 ----
+  for (const [src, c] of Object.entries(CROPS)) {
+    const inPublic = path.join(PUBLIC, src);
+    const inOriginals = path.join(ORIGINALS, src);
+    const srcPath = fs.existsSync(inPublic) ? inPublic : fs.existsSync(inOriginals) ? inOriginals : null;
+    if (!srcPath) {
+      missing.push(src);
+      continue;
+    }
+    results.push(await cropOne(srcPath, c));
+    if (srcPath === inPublic) fs.renameSync(inPublic, inOriginals);
+  }
 
   for (const [src, outRel] of Object.entries(MAP)) {
     const inPublic = path.join(PUBLIC, src);

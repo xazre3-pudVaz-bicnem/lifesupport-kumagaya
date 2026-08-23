@@ -11,13 +11,15 @@ type Props = {
   /** 右側に添える写真 */
   photo?: Photo;
   photoPosition?: string;
+  /** 写真の見た目（縦長のポートレートなど、既定の横長比を変えたいとき） */
+  photoClassName?: string;
 };
 
 /**
  * 下層ページの冒頭。薄い黄緑の面に見出しを置き、右に写真を添える。
  * 写真がない場合はタイポグラフィだけで構成する。
  */
-export default function PageHeader({ en, title, lead, crumbs, photo, photoPosition }: Props) {
+export default function PageHeader({ en, title, lead, crumbs, photo, photoPosition, photoClassName }: Props) {
   return (
     <header className="relative overflow-hidden bg-mint pt-24 lg:pt-28">
       <div
@@ -42,7 +44,7 @@ export default function PageHeader({ en, title, lead, crumbs, photo, photoPositi
         {photo ? (
           <PhotoFrame
             photo={photo}
-            className="aspect-[16/10] lg:aspect-[4/3]"
+            className={photoClassName ?? "aspect-[16/10] lg:aspect-[4/3]"}
             position={photoPosition}
             sizes="(min-width: 1024px) 34rem, 100vw"
             priority

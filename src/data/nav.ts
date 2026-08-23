@@ -8,6 +8,7 @@ export const NAV: NavItem[] = [
   { href: "/insurance-outside", label: "介護保険外の買い物", en: "Insurance" },
   { href: "/flow", label: "ご利用の流れ", en: "Flow" },
   { href: "/about", label: "私たちについて", en: "About" },
+  { href: "/message", label: "代表挨拶", en: "Message" },
   { href: "/faq", label: "よくある質問", en: "FAQ" },
   { href: "/blog", label: "お役立ち情報", en: "Blog" },
 ];

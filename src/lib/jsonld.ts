@@ -1,4 +1,6 @@
 import { site } from "@/data/site";
+import { photos } from "@/data/photos";
+import { representative } from "@/data/representative";
 import type { BlogPost } from "@/lib/blog";
 
 /**
@@ -11,6 +13,37 @@ import type { BlogPost } from "@/lib/blog";
 export const ORG_ID = `${site.url}/#organization`;
 export const WEBSITE_ID = `${site.url}/#website`;
 export const SERVICE_ID = `${site.url}/#service`;
+export const PERSON_ID = `${site.url}/message#person`;
+
+/**
+ * 代表者。E-E-A-T（経験・専門性・権威性・信頼性）の裏づけとして、
+ * 資料で確認できた学歴・職歴・活動のみを記載する。
+ * 保有資格は確認できていないため出さない。
+ */
+export function personJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": PERSON_ID,
+    name: representative.nameFlat,
+    alternateName: representative.nameKana,
+    jobTitle: "代表",
+    description:
+      "ライフサポート熊谷 代表。家族の介護をきっかけに福祉の道へ進み、ショートステイ・居宅介護・デイサービス・グループホーム・生活介護などの現場を経験。現在も福祉の現場に従事しながら、熊谷市で買い物代行サービスを運営している。",
+    image: `${site.url}${photos.representative.src}`,
+    url: `${site.url}/message`,
+    birthDate: representative.birthDate,
+    birthPlace: { "@type": "Place", name: representative.birthPlace },
+    homeLocation: { "@type": "Place", name: `${site.prefecture}${site.areaMain}` },
+    alumniOf: [
+      { "@type": "EducationalOrganization", name: "桐生第一高等学校" },
+      { "@type": "CollegeOrUniversity", name: "駿河台大学 メディア情報学部 メディア情報学科" },
+    ],
+    knowsAbout: ["買い物代行", "高齢者の生活支援", "介護・福祉の現場支援", "地域における孤立の防止"],
+    worksFor: { "@id": ORG_ID },
+    founderOf: { "@id": ORG_ID },
+  };
+}
 
 function areaServed() {
   return site.areas.map((name) => ({
@@ -39,7 +72,7 @@ export function organizationJsonLd() {
       addressRegion: site.prefecture,
       addressLocality: site.areaMain,
     },
-    founder: { "@type": "Person", name: site.representative },
+    founder: { "@id": PERSON_ID },
     sameAs: [site.instagram],
     knowsAbout: ["買い物代行", "高齢者の買い物支援", "介護保険外サービス"],
     ...(site.tel ? { telephone: site.telIntl } : {}),
