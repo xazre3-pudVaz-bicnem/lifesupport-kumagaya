@@ -1,0 +1,369 @@
+@import "tailwindcss";
+
+@theme {
+  /* ---- Brand colors ----
+     黄緑（若葉）を主役に、白・アイボリー・ごく薄いベージュで受ける。
+     文字はダークグレー。黄緑の上に白文字は原則使わない（コントラスト）。 */
+  --color-leaf: #8cc63f; /* 黄緑（ブランド・面・アクセント） */
+  --color-leaf-soft: #a8d468; /* 明るい黄緑（装飾） */
+  --color-sprout: #d9ecb8; /* 若芽（薄い面・罫線） */
+  --color-mint: #eef6e1; /* ごく薄い黄緑（セクション背景） */
+  --color-moss: #4f8a1f; /* 濃い黄緑（リンク・小見出し。白地で 4.6:1） */
+  --color-moss-deep: #3c6b16; /* ホバー・強調（白地で 6.5:1） */
+  --color-ivory: #fbfaf6; /* ページ背景 */
+  --color-cream: #f6f3ea; /* アイボリー（面） */
+  --color-sand: #efe9dc; /* ごく薄いベージュ（面・罫線） */
+  --color-ink: #2b2e2a; /* 本文 */
+  --color-ink-soft: #585d55; /* 控えめな本文 */
+  --color-stone: #8a8f86; /* キャプション */
+  --color-line: #e2e0d7; /* 罫線 */
+
+  /* ---- Fonts ---- */
+  --font-maru: var(--font-zen-maru), "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
+  --font-sans: var(--font-noto-sans), "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP",
+    sans-serif;
+
+  /* ---- Easing ---- */
+  --ease-quiet: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ================================================================
+   Base
+================================================================ */
+
+html {
+  scroll-padding-top: 5.5rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  background-color: var(--color-ivory);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "palt";
+  letter-spacing: 0.03em;
+  line-height: 1.95;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background-color: color-mix(in srgb, var(--color-leaf) 35%, transparent);
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-moss);
+  outline-offset: 3px;
+}
+
+/* ================================================================
+   Components（@layer に入れないとユーティリティを打ち消す）
+================================================================ */
+
+@layer components {
+  .font-maru {
+    font-family: var(--font-maru);
+  }
+
+  /* 細い罫線 */
+  .hairline {
+    border-color: var(--color-line);
+  }
+
+  /* 見出し上の小さなラベル */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-moss);
+  }
+
+  .eyebrow::before {
+    content: "";
+    display: inline-block;
+    width: 1.5rem;
+    height: 2px;
+    border-radius: 1px;
+    background: var(--color-leaf);
+  }
+
+  /* マーカー風の下線（黄緑） */
+  .marker {
+    background-image: linear-gradient(
+      transparent 62%,
+      color-mix(in srgb, var(--color-leaf) 45%, transparent) 62%,
+      color-mix(in srgb, var(--color-leaf) 45%, transparent) 92%,
+      transparent 92%
+    );
+    padding: 0 0.1em;
+  }
+
+  /* ボタン：濃い黄緑の面に白文字（コントラスト 4.6:1 以上） */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    min-height: 3.25rem;
+    padding: 0.85rem 1.75rem;
+    border-radius: 9999px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    transition:
+      background-color 0.3s var(--ease-quiet),
+      color 0.3s var(--ease-quiet),
+      transform 0.3s var(--ease-quiet),
+      box-shadow 0.3s var(--ease-quiet);
+  }
+
+  .btn-primary {
+    background: var(--color-moss);
+    color: #fff;
+    box-shadow: 0 8px 24px -12px color-mix(in srgb, var(--color-moss) 70%, transparent);
+  }
+
+  .btn-primary:hover {
+    background: var(--color-moss-deep);
+    transform: translateY(-1px);
+  }
+
+  .btn-outline {
+    border: 1.5px solid var(--color-ink);
+    color: var(--color-ink);
+    background: transparent;
+  }
+
+  .btn-outline:hover {
+    background: var(--color-ink);
+    color: var(--color-ivory);
+  }
+
+  /* テキストリンク（下線が伸びる） */
+  .link-line {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-bottom: 0.2rem;
+    color: var(--color-moss);
+    font-weight: 500;
+  }
+
+  .link-line::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 1.5px;
+    width: 100%;
+    background: currentColor;
+    transform-origin: left;
+    transition: transform 0.5s var(--ease-quiet);
+  }
+
+  .link-line:hover::after {
+    transform: scaleX(0.4);
+  }
+
+  /* 大きな番号（流れ・価値観） */
+  .big-num {
+    font-family: var(--font-maru);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--color-leaf);
+    letter-spacing: -0.02em;
+  }
+
+  /* 紙のような微かな質感（ヒーロー背景） */
+  .grain {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .grain::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.5;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='0.05'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 240px 240px;
+  }
+
+  /* 記事本文（react-markdown の出力に適用） */
+  .prose-blog h2 {
+    font-family: var(--font-maru);
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1.6;
+    margin-top: 2.8em;
+    margin-bottom: 1em;
+    padding-bottom: 0.55em;
+    border-bottom: 2px solid var(--color-sprout);
+  }
+
+  .prose-blog h3 {
+    font-family: var(--font-maru);
+    font-size: 1.12rem;
+    font-weight: 700;
+    margin-top: 2.2em;
+    margin-bottom: 0.8em;
+    padding-left: 0.8em;
+    border-left: 3px solid var(--color-leaf);
+  }
+
+  .prose-blog p {
+    margin-bottom: 1.5em;
+  }
+
+  .prose-blog a {
+    color: var(--color-moss);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1px;
+  }
+
+  .prose-blog a:hover {
+    color: var(--color-moss-deep);
+  }
+
+  .prose-blog ul,
+  .prose-blog ol {
+    margin: 1.4em 0;
+    padding-left: 1.4em;
+  }
+
+  .prose-blog ul {
+    list-style: disc;
+  }
+
+  .prose-blog ol {
+    list-style: decimal;
+  }
+
+  .prose-blog li {
+    margin-bottom: 0.45em;
+  }
+
+  .prose-blog li::marker {
+    color: var(--color-moss);
+  }
+
+  .prose-blog strong {
+    font-weight: 700;
+  }
+
+  .prose-blog blockquote {
+    margin: 1.6em 0;
+    padding: 0.4em 1.2em;
+    border-left: 3px solid var(--color-sprout);
+    color: var(--color-ink-soft);
+    background: var(--color-mint);
+  }
+
+  .prose-blog table {
+    width: 100%;
+    margin: 1.6em 0;
+    border-collapse: collapse;
+    font-size: 0.92em;
+  }
+
+  .prose-blog th,
+  .prose-blog td {
+    border: 1px solid var(--color-line);
+    padding: 0.6em 0.9em;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .prose-blog th {
+    background: var(--color-mint);
+    font-weight: 500;
+  }
+
+  .prose-blog hr {
+    border: 0;
+    border-top: 1px solid var(--color-line);
+    margin: 2.5em 0;
+  }
+}
+
+/* ================================================================
+   Reveal — スクロールに合わせた控えめな出現
+   （JSが無効でも本文が見えるよう .js 配下に限定）
+================================================================ */
+
+.js .reveal {
+  opacity: 0;
+  transform: translateY(1.25rem);
+  transition:
+    opacity 1s var(--ease-quiet),
+    transform 1s var(--ease-quiet);
+  transition-delay: var(--reveal-delay, 0s);
+}
+
+.js .reveal.is-inview {
+  opacity: 1;
+  transform: none;
+}
+
+/* ================================================================
+   Hero — 初回表示（JS不使用）
+================================================================ */
+
+@keyframes hero-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(0.9rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes hero-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.hero-fade {
+  animation: hero-fade-up 1.2s var(--ease-quiet) both;
+  animation-delay: var(--hero-delay, 0s);
+}
+
+.hero-float {
+  animation: hero-float 7s ease-in-out infinite;
+}
+
+/* ================================================================
+   Reduced motion
+================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .js .reveal,
+  .reveal,
+  .hero-fade,
+  .hero-float {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
