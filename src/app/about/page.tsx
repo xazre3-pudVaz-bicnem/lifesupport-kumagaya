@@ -17,7 +17,7 @@ import { ArrowRightIcon, ExternalIcon, InstagramIcon } from "@/components/ui/ico
 
 const TITLE = "私たちについて｜福祉・介護の現場経験から生まれた、熊谷の買い物代行";
 const DESCRIPTION =
-  "ライフサポート熊谷は、福祉・介護の現場経験から生まれた熊谷市の買い物代行サービスです。「ちょっとお願い」と言える地域をつくりたい。代表・齊藤匠の想いと、大切にしている3つのこと、事業概要をご紹介します。";
+  "ライフサポート熊谷は、福祉・介護の現場経験から生まれた熊谷市の買い物代行サービスです。「ちょっとお願い」と言える地域をつくりたい。代表・齋藤匠の想いと、大切にしている3つのこと、事業概要をご紹介します。";
 
 export const metadata: Metadata = pageMetadata({
   title: TITLE,

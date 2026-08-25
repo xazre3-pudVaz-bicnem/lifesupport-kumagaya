@@ -15,13 +15,13 @@ import { ArrowRightIcon } from "@/components/ui/icons";
 
 const TITLE = "代表挨拶｜安心と人の温かさを、一緒にお届けします";
 const DESCRIPTION =
-  "ライフサポート熊谷 代表・齊藤匠のご挨拶。家族の介護をきっかけに福祉の道へ進み、今も現場に立ちながら、熊谷市で買い物代行を始めました。サービスに込めた想いと、これまでの歩みをお伝えします。";
+  "ライフサポート熊谷 代表・齋藤匠のご挨拶。家族の介護をきっかけに福祉の道へ進み、今も現場に立ちながら、熊谷市で買い物代行を始めました。サービスに込めた想いと、これまでの歩みをお伝えします。";
 
 export const metadata: Metadata = pageMetadata({
   title: TITLE,
   description: DESCRIPTION,
   path: "/message",
-  keywords: ["ライフサポート熊谷 代表", "齊藤匠", "熊谷 買い物代行 代表挨拶"],
+  keywords: ["ライフサポート熊谷 代表", "齋藤匠", "熊谷 買い物代行 代表挨拶"],
 });
 
 export default function MessagePage() {
@@ -39,7 +39,7 @@ export default function MessagePage() {
             一緒にお届けします。
           </>
         }
-        lead="ライフサポート熊谷の代表を務める、齊藤匠と申します。家族の介護をきっかけに福祉の道へ進み、今も現場に立ちながら、熊谷市で買い物代行を始めました。"
+        lead="ライフサポート熊谷の代表を務める、齋藤匠と申します。家族の介護をきっかけに福祉の道へ進み、今も現場に立ちながら、熊谷市で買い物代行を始めました。"
         crumbs={[
           { name: "ホーム", path: "/" },
           { name: "私たちについて", path: "/about" },
@@ -182,7 +182,7 @@ export default function MessagePage() {
 
       <ContactCta
         title="買い物のこと、どうぞお気軽に。"
-        lead="「これって頼める？」という段階のご相談で構いません。ご本人からでも、離れて暮らすご家族からでも。代表の齊藤がお話をうかがいます。"
+        lead="「これって頼める？」という段階のご相談で構いません。ご本人からでも、離れて暮らすご家族からでも。代表の齋藤がお話をうかがいます。"
       />
     </>
   );

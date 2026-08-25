@@ -27,7 +27,7 @@ export const photos = {
   // ---- 代表（実写。イメージ写真ではない） ----
   representative: {
     src: "/images/about/kumagaya-representative-saito-takumi.jpg",
-    alt: "ライフサポート熊谷 代表の齊藤匠。スーツ姿で微笑んでいる",
+    alt: "ライフサポート熊谷 代表の齋藤匠。スーツ姿で微笑んでいる",
     width: 1023,
     height: 1537,
   },

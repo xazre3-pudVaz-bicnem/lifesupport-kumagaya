@@ -20,7 +20,7 @@ export const site = {
   tagline: "熊谷市の買い物代行サービス",
 
   /** 代表（Instagramプロフィールに記載） */
-  representative: "齊藤 匠",
+  representative: "齋藤 匠",
 
   /** 提供サービス。現時点では買い物代行のみ。ここ以外を提供サービスとして書かない */
   services: ["買い物代行"] as const,
