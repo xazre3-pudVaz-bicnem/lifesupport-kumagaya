@@ -170,7 +170,44 @@ export const photos = {
     width: W,
     height: H,
   },
+
+  // ---- 対応エリアのイラスト（水彩調。1枚の絵を4分割したもの） ----
+  areaKumagaya: {
+    src: "/images/area/kumagaya-uchiwa-festival.jpg",
+    alt: "熊谷うちわ祭のイラスト。山車を囲んで、祭半纏を着た人たちが並んでいる",
+    width: 659,
+    height: 494,
+  },
+  areaFukaya: {
+    src: "/images/area/fukaya-negi-station.jpg",
+    alt: "深谷市のイラスト。手前に深谷ねぎの畑、奥に赤レンガの深谷駅と電車",
+    width: 659,
+    height: 494,
+  },
+  areaGyoda: {
+    src: "/images/area/gyoda-oshi-castle.jpg",
+    alt: "行田市のイラスト。忍城と鐘楼、堀にかかる木の橋",
+    width: 704,
+    height: 528,
+  },
+  areaHigashimatsuyama: {
+    src: "/images/area/higashimatsuyama-cherry-blossom.jpg",
+    alt: "東松山市のイラスト。満開の桜並木と、川にかかる青い橋",
+    width: 660,
+    height: 495,
+  },
 } as const satisfies Record<string, Photo>;
+
+/**
+ * 対応エリアと、その市のイラスト。
+ * 並び順は site.areas（熊谷市を先頭）と揃えること。
+ */
+export const AREA_ILLUSTRATIONS: { area: string; photo: Photo; caption: string }[] = [
+  { area: "熊谷市", photo: photos.areaKumagaya, caption: "熊谷うちわ祭" },
+  { area: "深谷市", photo: photos.areaFukaya, caption: "深谷ねぎと深谷駅" },
+  { area: "行田市", photo: photos.areaGyoda, caption: "忍城" },
+  { area: "東松山市", photo: photos.areaHigashimatsuyama, caption: "春の川辺" },
+];
 
 export type PhotoKey = keyof typeof photos;
 

@@ -3,8 +3,8 @@ import Link from "next/link";
 import PageHeader from "@/components/ui/PageHeader";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Reveal from "@/components/ui/Reveal";
-import PhotoFrame from "@/components/ui/Photo";
 import ContactCta from "@/components/ui/ContactCta";
+import AreaIllustrations from "@/components/ui/AreaIllustrations";
 import JsonLd from "@/components/ui/JsonLd";
 import { photos } from "@/data/photos";
 import { CAREER, CLOSING, STORY, representative } from "@/data/representative";
@@ -66,25 +66,9 @@ export default function MessagePage() {
         </Reveal>
       </section>
 
-      {/* 本編 */}
-      <section className="mx-auto max-w-6xl px-5 py-14 sm:px-8 sm:py-20">
-        <div className="grid gap-12 lg:grid-cols-[1fr_2fr] lg:gap-16">
-          {/* 写真（PCでは追従させて、読みながら顔が見えるようにする） */}
-          <div className="lg:sticky lg:top-28 lg:self-start">
-            <Reveal>
-              <PhotoFrame
-                photo={photos.representative}
-                className="mx-auto aspect-[1023/1537] w-full max-w-[18rem] bg-transparent [mask-image:linear-gradient(to_bottom,black_92%,transparent_100%)]"
-                sizes="(min-width: 1024px) 18rem, 60vw"
-              />
-              <p className="mt-4 text-center text-[12.5px] leading-[1.9] text-stone lg:text-left">
-                {representative.title}
-                <br />
-                {representative.name}（{representative.nameKana}）
-              </p>
-            </Reveal>
-          </div>
-
+      {/* 本編（写真はページ冒頭の1点のみ。読みやすさを優先して1カラムにする） */}
+      <section className="mx-auto max-w-3xl px-5 py-14 sm:px-8 sm:py-20">
+        <div>
           <div>
             {STORY.map((s, i) => (
               <Reveal key={s.id} delay={Math.min(i, 3) * 0.05}>
@@ -101,6 +85,13 @@ export default function MessagePage() {
                 </section>
               </Reveal>
             ))}
+
+            {/* 対応エリア（4市のイラスト） */}
+            <AreaIllustrations
+              className="mt-16 border-t hairline pt-14"
+              title="うかがうのは、この4つのまち"
+              lead="熊谷市を中心に、深谷市・行田市・東松山市。住み慣れたまちで暮らし続けるお手伝いを、この地域で続けていきます。"
+            />
 
             {/* 締めの挨拶 */}
             <Reveal>

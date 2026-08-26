@@ -28,6 +28,21 @@ const P = "ChatGPT Image 2026年8月23日 ";
 const CROPS: Record<string, { out: string; left: number; top: number; width: number; height: number }> = {};
 
 /**
+ * 1枚に複数のイラストが並んだ画像を、パネルごとに切り出す。
+ * 対応エリア4市のイラストは 2x2 で1枚に収められているため、個別に分割して使う。
+ * 座標は余白（アイボリー地）の帯を検出して求めたもの（中央の余白は x:669-688 / y:584-608）。
+ * 表示側で高さを揃えられるよう、各パネルは中央を 4:3 に整えて書き出す。
+ */
+const SPLITS: Record<string, { out: string; left: number; top: number; width: number; height: number }[]> = {
+  "S__26550288.jpg": [
+    { out: "images/area/kumagaya-uchiwa-festival.jpg", left: 10, top: 32, width: 659, height: 552 },
+    { out: "images/area/gyoda-oshi-castle.jpg", left: 689, top: 32, width: 704, height: 552 },
+    { out: "images/area/fukaya-negi-station.jpg", left: 10, top: 609, width: 659, height: 495 },
+    { out: "images/area/higashimatsuyama-cherry-blossom.jpg", left: 689, top: 609, width: 704, height: 495 },
+  ],
+};
+
+/**
  * 背景を差し替える写真。
  * 代表の写真は青いスタジオ背景で撮影されており、サイトの配色から浮くため、
  * 背景だけをブランドカラー（--color-mint）へ置き換える。
@@ -202,6 +217,32 @@ async function replaceBackground(srcPath: string, cfg: (typeof BG_REPLACE)[strin
   return { outRel: cfg.out, width: res.width, height: res.height };
 }
 
+/** 1枚の画像から1パネルを切り出し、中央を 4:3 に整えて書き出す */
+async function splitOne(srcPath: string, panel: (typeof SPLITS)[string][number]) {
+  const out = path.join(PUBLIC, panel.out);
+  fs.mkdirSync(path.dirname(out), { recursive: true });
+
+  // パネルの中央から 4:3 を取り出す（イラストの主役は中央にあるため端の余白を落とす）
+  const target = 4 / 3;
+  let w = panel.width;
+  let h = Math.round(w / target);
+  if (h > panel.height) {
+    h = panel.height;
+    w = Math.round(h * target);
+  }
+  const left = panel.left + Math.round((panel.width - w) / 2);
+  const top = panel.top + Math.round((panel.height - h) / 2);
+
+  const info = await sharp(srcPath)
+    .rotate()
+    .extract({ left, top, width: w, height: h })
+    .resize({ width: 1200, withoutEnlargement: true })
+    .jpeg({ quality: 86, mozjpeg: true })
+    .toFile(out);
+  console.log(`▤ ${panel.out}  ${info.width}x${info.height}  ${Math.round(info.size / 1024)}KB`);
+  return { outRel: panel.out, width: info.width, height: info.height };
+}
+
 /** 指定範囲を切り出して出力する（人物写真をトリミングしすぎないこと） */
 async function cropOne(srcPath: string, c: (typeof CROPS)[string]) {
   const out = path.join(PUBLIC, c.out);
@@ -219,6 +260,19 @@ async function main() {
   fs.mkdirSync(ORIGINALS, { recursive: true });
   const results: { outRel: string; width: number; height: number }[] = [];
   const missing: string[] = [];
+
+  // ---- 1枚に並んだイラストを分割する ----
+  for (const [src, panels] of Object.entries(SPLITS)) {
+    const inPublic = path.join(PUBLIC, src);
+    const inOriginals = path.join(ORIGINALS, src);
+    const srcPath = fs.existsSync(inPublic) ? inPublic : fs.existsSync(inOriginals) ? inOriginals : null;
+    if (!srcPath) {
+      missing.push(src);
+      continue;
+    }
+    for (const panel of panels) results.push(await splitOne(srcPath, panel));
+    if (srcPath === inPublic) fs.renameSync(inPublic, inOriginals);
+  }
 
   // ---- 背景を差し替える写真 ----
   for (const [src, cfg] of Object.entries(BG_REPLACE)) {

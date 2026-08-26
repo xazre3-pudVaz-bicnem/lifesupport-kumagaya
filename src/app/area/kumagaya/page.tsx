@@ -10,6 +10,7 @@ import Faq from "@/components/ui/Faq";
 import ContactCta from "@/components/ui/ContactCta";
 import JsonLd from "@/components/ui/JsonLd";
 import LaunchNotice from "@/components/ui/LaunchNotice";
+import AreaIllustrations from "@/components/ui/AreaIllustrations";
 import RelatedPosts from "@/components/blog/RelatedPosts";
 import { FAQ_GENERAL } from "@/data/faq";
 import { site } from "@/data/site";
@@ -147,6 +148,13 @@ export default function AreaKumagayaPage() {
             </div>
           </Reveal>
         </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-5 pb-20 sm:px-8 sm:pb-28">
+        <AreaIllustrations
+          title="4つのまちへ、うかがっています"
+          lead="熊谷市を中心に、深谷市・行田市・東松山市。それぞれのまちで、いつもの暮らしが続くようにお手伝いします。"
+        />
       </section>
 
       {/* 公的な相談先 */}
