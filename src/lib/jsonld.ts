@@ -76,6 +76,7 @@ export function organizationJsonLd() {
     sameAs: [site.instagram],
     knowsAbout: ["買い物代行", "高齢者の買い物支援", "介護保険外サービス"],
     ...(site.tel ? { telephone: site.telIntl } : {}),
+    ...(site.email ? { email: site.email } : {}),
   };
 }
 
@@ -95,11 +96,11 @@ export function serviceJsonLd() {
       "@type": "Audience",
       audienceType: "買い物に行くのが大変な方、高齢の親を心配するご家族",
     },
-    availableChannel: {
-      "@type": "ServiceChannel",
-      serviceUrl: site.instagramDm,
-      name: "Instagram DM",
-    },
+    availableChannel: [
+      ...(site.tel ? [{ "@type": "ServiceChannel", servicePhone: site.telIntl, name: "電話" }] : []),
+      ...(site.email ? [{ "@type": "ServiceChannel", serviceUrl: `mailto:${site.email}`, name: "メール" }] : []),
+      { "@type": "ServiceChannel", serviceUrl: site.instagramDm, name: "Instagram DM" },
+    ],
   };
 }
 

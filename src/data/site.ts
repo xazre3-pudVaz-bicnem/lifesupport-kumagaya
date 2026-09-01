@@ -54,7 +54,8 @@ export const site = {
   /** JSON-LD 用の国際表記 */
   telIntl: "+81-80-1243-7154",
   line: null as string | null,
-  email: null as string | null,
+  /** メールでのお問い合わせ（2026年8月26日 オーナー確認） */
+  email: "lscw4293@yahoo.co.jp" as string | null,
 
   /** 住所・営業時間・料金・支払い方法は未確認（null） */
   address: null as string | null,
@@ -91,6 +92,15 @@ export function contactChannels() {
   });
   if (site.line) {
     channels.push({ key: "line", label: "LINEで相談する", href: site.line, external: true });
+  }
+  if (site.email) {
+    channels.push({
+      key: "email",
+      label: site.email,
+      href: `mailto:${site.email}`,
+      external: false,
+      note: "メールでのご相談",
+    });
   }
   return channels;
 }

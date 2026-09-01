@@ -9,11 +9,11 @@ import LaunchNotice from "@/components/ui/LaunchNotice";
 import { site } from "@/data/site";
 import { pageMetadata } from "@/lib/seo";
 import { webPageJsonLd } from "@/lib/jsonld";
-import { ArrowRightIcon, CheckIcon, ExternalIcon, InstagramIcon, PhoneIcon } from "@/components/ui/icons";
+import { ArrowRightIcon, CheckIcon, ExternalIcon, InstagramIcon, MailIcon, PhoneIcon } from "@/components/ui/icons";
 
-const TITLE = "お問い合わせ｜買い物のご相談は電話・InstagramのDMから";
+const TITLE = "お問い合わせ｜買い物のご相談は電話・メール・InstagramのDMから";
 const DESCRIPTION =
-  "ライフサポート熊谷へのお問い合わせ・買い物代行のご相談は、お電話（080-1243-7154）またはInstagram（@lifesupport_kumagaya）のDMで受け付けています。ご本人からも、離れて暮らすご家族からも。熊谷市・深谷市・行田市・東松山市対応。";
+  "ライフサポート熊谷へのお問い合わせ・買い物代行のご相談は、お電話（080-1243-7154）・メール・Instagram（@lifesupport_kumagaya）のDMで受け付けています。ご本人からも、離れて暮らすご家族からも。熊谷市・深谷市・行田市・東松山市対応。";
 
 export const metadata: Metadata = pageMetadata({
   title: TITLE,
@@ -35,7 +35,7 @@ export default function ContactPage() {
       <PageHeader
         en="Contact"
         title="お問い合わせ"
-        lead="買い物のご相談・ご依頼・サービスについてのご質問は、お電話またはInstagramのDMで受け付けています。「これって頼める？」という段階で構いません。"
+        lead="買い物のご相談・ご依頼・サービスについてのご質問は、お電話・メール・InstagramのDMで受け付けています。「これって頼める？」という段階で構いません。"
         crumbs={[
           { name: "ホーム", path: "/" },
           { name: "お問い合わせ", path: "/contact" },
@@ -50,7 +50,7 @@ export default function ContactPage() {
             <SectionHeading
               en="How to reach us"
               title="ご相談方法"
-              lead="お電話とInstagramのDMでご相談をお受けしています。ご本人からも、離れて暮らすご家族からもご連絡ください。"
+              lead="お電話・メール・InstagramのDMでご相談をお受けしています。ご本人からも、離れて暮らすご家族からもご連絡ください。"
             />
             <LaunchNotice className="mt-6" />
           </Reveal>
@@ -81,6 +81,21 @@ export default function ContactPage() {
                 <span>InstagramのDMで相談する</span>
                 <ExternalIcon className="h-4 w-4 opacity-70" />
               </a>
+              {site.email ? (
+                <a
+                  href={`mailto:${site.email}`}
+                  className="flex flex-col items-center gap-1 rounded-3xl border border-line px-6 py-5 text-center transition-colors hover:border-moss hover:bg-mint"
+                >
+                  <span className="inline-flex items-center gap-2 text-[13px] font-medium tracking-wider text-moss">
+                    <MailIcon className="h-4 w-4" />
+                    メールでのご相談
+                  </span>
+                  <span className="break-all font-maru text-[1.05rem] font-bold tracking-[0.02em] text-ink sm:text-[1.15rem]">
+                    {site.email}
+                  </span>
+                </a>
+              ) : null}
+
               <a
                 href={site.instagram}
                 target="_blank"

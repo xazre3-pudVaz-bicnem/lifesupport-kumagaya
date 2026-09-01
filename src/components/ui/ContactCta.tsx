@@ -22,7 +22,7 @@ type Props = {
  */
 export default function ContactCta({
   title = "買い物のこと、まずは相談から。",
-  lead = "「これって頼める？」という段階で構いません。ご本人からでも、ご家族からでも。お電話またはInstagramのDMからお気軽にどうぞ。",
+  lead = "「これって頼める？」という段階で構いません。ご本人からでも、ご家族からでも。お電話・メール・InstagramのDMからお気軽にどうぞ。",
   primaryLabel = "InstagramのDMで相談する",
   compact = false,
   withPhoto = false,
@@ -76,6 +76,15 @@ export default function ContactCta({
             </a>
 
             <p className="text-center text-[12.5px] text-stone">Instagram {site.instagramId}</p>
+
+            {site.email ? (
+              <p className="text-center text-[12.5px] text-stone">
+                メール：
+                <a href={`mailto:${site.email}`} className="break-all text-moss underline-offset-4 hover:underline">
+                  {site.email}
+                </a>
+              </p>
+            ) : null}
 
             <Link href="/contact" className="link-line mx-auto mt-2 text-sm">
               お問い合わせ方法の詳細 <ArrowRightIcon className="h-4 w-4" />

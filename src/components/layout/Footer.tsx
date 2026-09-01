@@ -50,6 +50,16 @@ export default function Footer() {
                   </dd>
                 </>
               ) : null}
+              {site.email ? (
+                <>
+                  <dt className="text-stone">メール</dt>
+                  <dd>
+                    <a href={`mailto:${site.email}`} className="break-all hover:text-moss">
+                      {site.email}
+                    </a>
+                  </dd>
+                </>
+              ) : null}
               {site.hours ? (
                 <>
                   <dt className="text-stone">受付時間</dt>

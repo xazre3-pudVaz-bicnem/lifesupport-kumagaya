@@ -124,7 +124,8 @@ export default function AboutPage() {
                 ["対応エリア", site.areas.join("・")],
                 ["背景", "福祉・介護の現場経験から生まれた地域の買い物代行サービス"],
                 ...(site.tel ? [["電話", site.tel]] : []),
-                ["ご相談方法", `お電話、または Instagram ${site.instagramId} のDM`],
+                ...(site.email ? [["メール", site.email]] : []),
+                ["ご相談方法", `お電話・メール、または Instagram ${site.instagramId} のDM`],
               ].map(([k, v]) => (
                 <div key={k} className="grid gap-1 border-b hairline py-4 sm:grid-cols-[9rem_1fr] sm:gap-6">
                   <dt className="text-[0.88rem] tracking-wider text-stone">{k}</dt>
@@ -133,7 +134,7 @@ export default function AboutPage() {
               ))}
             </dl>
             <p className="mt-5 text-[0.85rem] leading-[1.9] text-stone">
-              ※所在地・受付時間などは、確定次第このページと各ページに掲載します。ご相談はお電話またはInstagramのDMで受け付けています。
+              ※所在地・受付時間などは、確定次第このページと各ページに掲載します。ご相談はお電話・メール・InstagramのDMで受け付けています。
             </p>
             <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3">
               <a
