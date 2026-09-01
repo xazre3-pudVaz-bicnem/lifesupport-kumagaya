@@ -42,3 +42,6 @@ next-env.d.ts
 
 # 元写真（最適化前）
 assets/originals/
+
+# やり取りのスクリーンショットなど、公開しない参照資料
+assets/reference/
